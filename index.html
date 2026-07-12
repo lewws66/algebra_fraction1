@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simplifying Algebraic Fractions — Assessment for Learning</title>
+<script>
+window.MathJax = {
+  loader: { load: ['[tex]/cancel'] },
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], packages: {'[+]': ['cancel']} },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" id="MathJax-script" async></script>
+<style>
+  :root {
+    --bg: #ffffff; --bg2: #f5f5f7; --bg3: #ebebed;
+    --text: #1d1d1f; --text2: #6e6e73; --text3: #999;
+    --border: #d2d2d7; --border2: #e5e5ea;
+    --radius-sm: 8px; --radius-md: 10px; --radius-lg: 14px;
+    --teal: #1D9E75; --teal-light: #E1F5EE; --teal-dark: #085041;
+    --jade: #1599CE; --jade-light: #DFF2FB; --jade-dark: #0A506B;
+    --purple: #7F77DD; --purple-light: #EEEDFE; --purple-dark: #3C3489;
+    --blue: #1E72B8; --blue-light: #E6F1FB; --blue-dark: #0C447C;
+    --coral-light: #FAECE7; --coral-dark: #712B13;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e; --bg2: #2c2c2e; --bg3: #3a3a3c;
+      --text: #f5f5f7; --text2: #aeaeb2; --text3: #8e8e93;
+      --border: #3a3a3c; --border2: #2c2c2e;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg2); color: var(--text); min-height: 100vh; }
+
+  /* ── Title screen ── */
+  #title-screen {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 2rem;
+    background: linear-gradient(135deg, var(--blue-light) 0%, var(--teal-light) 100%);
+  }
+  .title-card {
+    background: var(--bg); border-radius: 20px; padding: 2.5rem 2rem;
+    max-width: 560px; width: 100%; text-align: center;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+  }
+  .title-badge {
+    display: inline-block; background: var(--blue-light); color: var(--blue-dark);
+    font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 20px;
+    letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .title-card h1 { font-size: 25px; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.3; }
+  .title-card .subtitle { font-size: 14px; color: var(--text2); margin-bottom: 1.5rem; line-height: 1.6; }
+  .id-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; text-align: left; }
+  .id-field label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.04em; display: block; margin-bottom: 0.3rem; }
+  .id-field input { width: 100%; padding: 9px 12px; border-radius: var(--radius-sm); border: 0.5px solid var(--border); font-size: 14px; background: var(--bg2); color: var(--text); }
+  .id-field input:focus { outline: none; border-color: var(--blue); background: var(--bg); }
+  .instructions { background: var(--bg2); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1.25rem; text-align: left; }
+  .instructions p { font-size: 13px; color: var(--text2); margin-bottom: 0.55rem; line-height: 1.6; }
+  .instructions p:last-child { margin-bottom: 0; }
+  .instructions strong { color: var(--text); font-weight: 500; }
+  .example-box { background: var(--bg); border: 0.5px solid var(--border2); border-radius: var(--radius-sm); padding: 0.6rem 0.85rem; margin: 0.5rem 0; font-size: 13.5px; }
+  .start-btn {
+    width: 100%; padding: 14px; border-radius: var(--radius-md); border: none;
+    background: var(--blue-dark); color: #fff; font-size: 16px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .start-btn:hover { background: var(--blue); }
+  .start-btn:disabled { background: var(--border); cursor: not-allowed; }
+  .name-warn { font-size: 12px; color: var(--coral-dark); margin-bottom: 0.75rem; display: none; text-align: left; }
+
+  /* ── Main app ── */
+  #app { display: none; }
+  .app-header {
+    background: var(--bg); border-bottom: 0.5px solid var(--border);
+    padding: 0.75rem 1.5rem; position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+  .app-title-wrap { flex-shrink: 0; }
+  .app-title { font-size: 15px; font-weight: 500; color: var(--text); }
+  .app-student { font-size: 11px; color: var(--text3); }
+  .nav-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .nav-tab {
+    padding: 6px 14px; border-radius: 20px; border: 0.5px solid var(--border);
+    font-size: 13px; font-weight: 500; cursor: pointer; background: var(--bg);
+    color: var(--text2); transition: all 0.15s;
+  }
+  .nav-tab:hover { background: var(--bg2); }
+  .nav-tab.active-t1 { background: var(--teal-light); color: var(--teal-dark); border-color: var(--teal); }
+  .nav-tab.active-t2 { background: var(--jade-light); color: var(--jade-dark); border-color: var(--jade); }
+  .nav-tab.active-t3 { background: var(--purple-light); color: var(--purple-dark); border-color: var(--purple); }
+  .nav-tab.active-t4  { background: var(--blue-light); color: var(--blue-dark); border-color: var(--blue); }
+  .nav-tab.active-sum { background: var(--bg3); color: var(--text); border-color: var(--text3); font-weight: 600; }
+
+  .content { max-width: 680px; margin: 0 auto; padding: 1.5rem 1.25rem; }
+  .section { display: none; } .section.active { display: block; }
+
+  .method-badge { display: inline-block; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 20px; margin-bottom: 0.75rem; }
+  .badge-t1 { background: var(--teal-light); color: var(--teal-dark); }
+  .badge-t2 { background: var(--jade-light); color: var(--jade-dark); }
+  .badge-t3 { background: var(--purple-light); color: var(--purple-dark); }
+  .badge-t4 { background: var(--blue-light); color: var(--blue-dark); }
+
+  .intro-card { background: var(--bg); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.25rem; border: 0.5px solid var(--border2); }
+  .intro-card h2 { font-size: 16px; font-weight: 500; margin-bottom: 0.5rem; }
+  .intro-card p { font-size: 13.5px; color: var(--text2); line-height: 1.65; margin-bottom: 0.4rem; }
+  .intro-card p:last-child { margin-bottom: 0; }
+  .success-crit { display: inline-flex; align-items: center; gap: 6px; background: var(--teal-light); color: var(--teal-dark); padding: 6px 12px; border-radius: 20px; font-size: 12.5px; font-weight: 500; margin-bottom: 1rem; }
+
+  .question-selector { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; }
+  .q-btn { padding: 6px 16px; border-radius: 20px; border: 0.5px solid var(--border); font-size: 13px; cursor: pointer; background: var(--bg); color: var(--text2); }
+  .q-btn:hover { background: var(--bg2); }
+  .q-btn.qt1 { background: var(--teal-light); color: var(--teal-dark); border-color: var(--teal); }
+  .q-btn.qt2 { background: var(--jade-light); color: var(--jade-dark); border-color: var(--jade); }
+  .q-btn.qt3 { background: var(--purple-light); color: var(--purple-dark); border-color: var(--purple); }
+  .q-btn.qt4 { background: var(--blue-light); color: var(--blue-dark); border-color: var(--blue); }
+
+  .problem-card { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border2); padding: 1.25rem; margin-bottom: 1rem; }
+  .problem-eqns { font-size: 19px; font-weight: 500; margin-bottom: 0.85rem; }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 0.4rem; }
+  .progress-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
+  .pf-t1 { background: var(--teal); } .pf-t2 { background: var(--jade); } .pf-t3 { background: var(--purple); } .pf-t4 { background: var(--blue); }
+  .progress-label { font-size: 12px; color: var(--text3); margin-bottom: 1rem; }
+
+  .step { border-radius: var(--radius-md); border: 0.5px solid var(--border2); padding: 1rem; margin-bottom: 0.75rem; background: var(--bg); transition: all 0.2s; }
+  .step.locked { opacity: 0.38; pointer-events: none; }
+  .step.completed-t1 { border-color: var(--teal); background: var(--teal-light); }
+  .step.completed-t2 { border-color: var(--jade); background: var(--jade-light); }
+  .step.completed-t3 { border-color: var(--purple); background: var(--purple-light); }
+  .step.completed-t4 { border-color: var(--blue); background: var(--blue-light); }
+  .step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.6rem; }
+  .step-num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+  .sn-t1 { background: var(--teal-light); color: var(--teal-dark); }
+  .sn-t2 { background: var(--jade-light); color: var(--jade-dark); }
+  .sn-t3 { background: var(--purple-light); color: var(--purple-dark); }
+  .sn-t4 { background: var(--blue-light); color: var(--blue-dark); }
+  .step-title { font-size: 14px; font-weight: 500; }
+  .done-mark { font-size: 14px; margin-left: auto; }
+  .done-t1 { color: var(--teal); } .done-t2 { color: var(--jade); } .done-t3 { color: var(--purple); } .done-t4 { color: var(--blue); }
+
+  .substep { background: var(--bg2); padding: 0.75rem 1rem; margin-bottom: 0.6rem; border-left: 3px solid var(--border); }
+  .substep.ss-t1 { border-left-color: var(--teal); }
+  .substep.ss-t2 { border-left-color: var(--jade); }
+  .substep.ss-t3 { border-left-color: var(--purple); }
+  .substep.ss-t4 { border-left-color: var(--blue); }
+  .substep-label { font-size: 11px; font-weight: 600; color: var(--text3); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .substep-instruction { font-size: 13px; color: var(--text2); margin-bottom: 0.6rem; line-height: 1.55; }
+  .working-line { font-size: 14px; color: var(--text2); background: var(--bg); border-radius: var(--radius-sm); padding: 6px 10px; margin-bottom: 0.5rem; border: 0.5px solid var(--border2); }
+
+  .answer-row { display: flex; gap: 8px; align-items: center; margin-top: 0.4rem; }
+  .answer-input { flex: 1; padding: 8px 12px; border-radius: var(--radius-sm); border: 0.5px solid var(--border); font-size: 14px; background: var(--bg); color: var(--text); font-family: 'Courier New', monospace; }
+  .answer-input:focus { outline: none; border-color: var(--blue); }
+  .answer-input.correct-t1 { background: var(--teal-light); border-color: var(--teal); color: var(--teal-dark); font-weight: 500; }
+  .answer-input.correct-t2 { background: var(--jade-light); border-color: var(--jade); color: var(--jade-dark); font-weight: 500; }
+  .answer-input.correct-t3 { background: var(--purple-light); border-color: var(--purple); color: var(--purple-dark); font-weight: 500; }
+  .answer-input.correct-t4 { background: var(--blue-light); border-color: var(--blue); color: var(--blue-dark); font-weight: 500; }
+  .check-btn { padding: 8px 16px; border-radius: var(--radius-sm); border: 0.5px solid var(--border); font-size: 13px; cursor: pointer; background: var(--bg2); color: var(--text); }
+  .check-btn:hover { background: var(--bg3); }
+  .show-btn { padding: 7px 12px; border-radius: var(--radius-sm); border: 0.5px solid var(--border2); font-size: 12px; cursor: pointer; background: transparent; color: var(--text3); }
+  .show-btn:hover { background: var(--bg2); color: var(--text2); }
+  .hint-note { font-size: 11.5px; color: var(--text3); margin-top: 0.4rem; }
+
+  .feedback { font-size: 13px; padding: 6px 10px; border-radius: var(--radius-sm); margin-top: 0.5rem; display: none; }
+  .fb-ok { background: var(--teal-light); color: var(--teal-dark); }
+  .fb-ng { background: var(--coral-light); color: var(--coral-dark); }
+  .fb-hint { background: var(--blue-light); color: var(--blue-dark); }
+  .revealed { background: var(--bg2); border-radius: var(--radius-sm); font-size: 14px; padding: 8px 12px; margin-top: 0.5rem; color: var(--text2); display: none; }
+
+  .solution-summary { border-radius: var(--radius-lg); padding: 1.1rem 1.4rem; margin-top: 1rem; border: 0.5px solid var(--border2); }
+  .solution-summary.sol-t1 { background: var(--teal-light); border-color: var(--teal); }
+  .solution-summary.sol-t2 { background: var(--jade-light); border-color: var(--jade); }
+  .solution-summary.sol-t3 { background: var(--purple-light); border-color: var(--purple); }
+  .solution-summary.sol-t4 { background: var(--blue-light); border-color: var(--blue); }
+  .solution-summary p { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.6rem; color: var(--text2); }
+  .sol-val { font-size: 22px; font-weight: 600; }
+  .sv-t1 { color: var(--teal-dark); } .sv-t2 { color: var(--jade-dark); } .sv-t3 { color: var(--purple-dark); } .sv-t4 { color: var(--blue-dark); }
+
+  .typing-hint { font-size: 11.5px; color: var(--text3); background: var(--bg2); border-radius: var(--radius-sm); padding: 6px 10px; margin-bottom: 0.85rem; }
+
+  .simplify-label { font-size:13px; font-weight:700; color:var(--text); margin:0.5rem 0 0.15rem; }
+  .q-nav { display:flex; justify-content:space-between; align-items:center; margin-top:1rem; gap:0.5rem; }
+  .q-nav-btn { padding:9px 18px; border-radius:var(--radius-md); border:0.5px solid var(--border); font-size:13px; font-weight:500; cursor:pointer; background:var(--bg2); color:var(--text); transition:all 0.15s; white-space:nowrap; }
+  .q-nav-btn:hover { background:var(--bg3); }
+  .q-nav-next { background:var(--teal-light); color:var(--teal-dark); border-color:var(--teal); }
+  .q-nav-next:hover { background:var(--teal); color:#fff; }
+  .q-nav-pos { font-size:12px; color:var(--text3); flex-shrink:0; }
+  .report-header { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border2); padding: 1rem 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
+  .report-student { font-size: 14px; font-weight: 500; }
+  .copy-btn { padding: 8px 16px; border-radius: var(--radius-md); border: 0.5px solid var(--border); font-size: 13px; cursor: pointer; background: var(--bg2); color: var(--text); }
+  .copy-btn:hover { background: var(--bg3); }
+  .stat-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; }
+  .stat-pill { font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 20px; }
+  .sp-first  { background: var(--teal-light); color: var(--teal-dark); }
+  .sp-retry  { background: var(--jade-light); color: var(--jade-dark); }
+  .sp-shown  { background: var(--blue-light);  color: var(--blue-dark); }
+  .sp-blank  { background: var(--bg3); color: var(--text2); }
+  .report-section { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border2); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .report-section-title { font-size: 13px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+  .report-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; border-bottom: 0.5px solid var(--border2); }
+  .report-row:last-child { border-bottom: none; }
+  .rq-label { font-size: 12px; font-weight: 500; color: var(--text2); min-width: 26px; }
+  .rq-frac  { font-size: 12px; color: var(--text3); min-width: 100px; font-family: 'Courier New', monospace; }
+  .dots-wrap { display: flex; gap: 5px; flex-wrap: wrap; }
+  .sdot { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; cursor: default; border: 0.5px solid transparent; }
+  .sdot-first { background: var(--teal-light);   color: var(--teal-dark);   border-color: var(--teal); }
+  .sdot-retry { background: var(--jade-light);  color: var(--jade-dark);  border-color: var(--jade); }
+  .sdot-shown { background: var(--blue-light);   color: var(--blue-dark);   border-color: var(--blue); }
+  .sdot-blank { background: var(--bg2);          color: var(--text3);       border-color: var(--border); }
+  .rq-ans { font-size: 11px; color: var(--teal-dark); font-family: 'Courier New', monospace; white-space: nowrap; padding-left: 6px; border-left: 1px solid var(--border2); }
+
+  @media print {
+    #title-screen { display: none !important; }
+    .app-header { display: none !important; }
+    .section { display: none !important; }
+    #sec-summary { display: block !important; }
+    #app { display: block !important; }
+    .copy-btn, .print-btn { display: none !important; }
+    body { background: white; }
+    .report-section { page-break-inside: avoid; border: 1px solid #ccc; margin-bottom: 0.75rem; }
+    .sdot { border: 1px solid #ccc; }
+  }
+
+  @media (max-width: 500px) {
+    .app-header { padding: 0.75rem 1rem; }
+    .id-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ TITLE SCREEN ══════════════ -->
+<div id="title-screen">
+  <div class="title-card">
+    <div class="title-badge">Assessment for Learning</div>
+    <h1>Simplifying Algebraic Fractions</h1>
+    <p class="subtitle">An interactive step-by-step exercise on reducing fractions to lowest terms, with formative feedback at every stage.</p>
+
+    <div class="id-row">
+      <div class="id-field"><label>Name</label><input id="stu-name" type="text" placeholder="Your name" oninput="checkNameField()"></div>
+      <div class="id-field"><label>Class</label><input id="stu-class" type="text" placeholder="e.g. 2A" oninput="checkNameField()"></div>
+    </div>
+    <p class="name-warn" id="name-warn">Please enter your name and class before starting.</p>
+
+    <div class="instructions">
+      <p><strong>Success criteria:</strong> I can reduce a given algebraic fraction to its lowest terms.</p>
+      <p>Work through the tabs in order: <strong>Numeric Fractions → Basic Variable Fractions → Fractions, Common and Linear Factors → Fractions, Quadratic Expressions with Common Linear Factors</strong>. Each question is broken into sub-steps — enter your answer for each and press <strong>Check</strong>. If stuck, press <strong>Show</strong> to reveal the working, then make sure you understand it before continuing.</p>
+      <p><strong>Worked example (Numeric Fractions):</strong></p>
+      <div class="example-box">$$\dfrac{5}{10} = \dfrac{5}{2\times 5} = \dfrac{\cancelto{1}{5}}{2\times\cancelto{1}{5}} = \dfrac{1}{2}$$ — dividing the common factor 5 from both the numerator and denominator.</div>
+      <p><strong>Worked example (Fractions, Quadratic Expressions with Common Linear Factors):</strong></p>
+      <div class="example-box">$$\dfrac{x^2-5x+6}{x^2-4} = \dfrac{(x-2)(x-3)}{(x-2)(x+2)} = \dfrac{\cancelto{1}{(x-2)}(x-3)}{\cancelto{1}{(x-2)}(x+2)} = \dfrac{x-3}{x+2}$$ — factor numerator and denominator fully, then cancel the common linear factor.</div>
+      <p><strong>Typing tip:</strong> use <code>^</code> for powers (e.g. <code>x^2</code>) and write fractions as <code>numerator/denominator</code>, e.g. <code>a/b</code> or <code>(x-3)/(x+2)</code>. No spaces needed.</p>
+    </div>
+
+    <button class="start-btn" id="start-btn" onclick="startApp()" disabled>Start Exercise →</button>
+  </div>
+</div>
+
+<!-- ══════════════ MAIN APP ══════════════ -->
+<div id="app">
+  <div class="app-header">
+    <div class="app-title-wrap">
+      <div class="app-title">Algebraic Fractions</div>
+      <div class="app-student" id="student-tag"></div>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab" onclick="showSec('t1')" id="navbtn-t1">Numeric Fractions</button>
+      <button class="nav-tab" onclick="showSec('t2')" id="navbtn-t2">Basic Variable Fractions</button>
+      <button class="nav-tab" onclick="showSec('t3')" id="navbtn-t3">Fractions, Common and Linear Factors</button>
+      <button class="nav-tab" onclick="showSec('t4')" id="navbtn-t4">Fractions, Quadratic Expressions with Common Linear Factors</button>
+      <button class="nav-tab" onclick="showSec('summary')" id="navbtn-summary" style="border-color:var(--text3);color:var(--text2);">📊 Report</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- TAB 1 -->
+    <div id="sec-t1" class="section">
+      <span class="method-badge badge-t1">Numeric fractions</span>
+      <div class="intro-card">
+        <h2>Reducing to lowest terms</h2>
+        <p>Find the Highest Common Factor (HCF) of the numerator and denominator, then divide both by it.</p>
+        <p style="margin-top:0.6rem;font-size:13px;font-weight:500;color:var(--text);">Example:</p>
+        <div style="margin-top:0.5rem;line-height:1;">
+          <div style="display:flex;align-items:center;gap:1.2rem;padding:0.35rem 0;">
+            <span style="min-width:120px;">$\dfrac{5}{10}$</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:1.2rem;padding:0.35rem 0;">
+            <span style="min-width:120px;">$= \dfrac{5}{2 \times 5}$</span>
+            <span style="font-size:12px;color:var(--text2);">HCF of 5 and 10 = 5</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:1.2rem;padding:0.35rem 0;">
+            <span style="min-width:120px;">$= \dfrac{\cancelto{1}{5}}{2 \times \cancelto{1}{5}}$</span>
+            <span style="font-size:12px;color:var(--text2);">divide the numerator and denominator by the common factor 5</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:1.2rem;padding:0.35rem 0;">
+            <span style="min-width:120px;">$= \dfrac{1}{2}$</span>
+            <span style="font-size:12px;color:var(--teal-dark);font-weight:500;">lowest terms</span>
+          </div>
+        </div>
+      </div>
+      <div class="question-selector" id="t1-qsel"></div>
+      <div id="t1-problem"></div>
+    </div>
+
+    <!-- TAB 2 -->
+    <div id="sec-t2" class="section">
+      <span class="method-badge badge-t2">Variable fractions</span>
+      <div class="intro-card">
+        <h2>Monomials with variables</h2>
+        <p>Simplify the numeric coefficients using the HCF, then simplify each variable by subtracting the smaller exponent from the larger (it stays on the side with the larger power).</p>
+        <p>Example: $\dfrac{12ab}{a^2} = \dfrac{12b}{a}$</p>
+      </div>
+      <div class="question-selector" id="t2-qsel"></div>
+      <div id="t2-problem"></div>
+    </div>
+
+    <!-- TAB 3 -->
+    <div id="sec-t3" class="section">
+      <span class="method-badge badge-t3">Factorizing Linear Expressions</span>
+      <div class="intro-card">
+        <h2>Factorize first, then cancel</h2>
+        <p>When the numerator and/or denominator are expressions (not single terms), factorize each one completely first. Only then can you cancel a common factor from both.</p>
+        <p>Example: $\dfrac{2a+6}{2} = \dfrac{2(a+3)}{2} = a+3$ — factorize the numerator first, then divide by the common factor.</p>
+      </div>
+      <div class="question-selector" id="t3-qsel"></div>
+      <div id="t3-problem"></div>
+    </div>
+
+    <!-- TAB 4 -->
+    <div id="sec-t4" class="section">
+      <span class="method-badge badge-t4">Quadratic factoring</span>
+      <div class="intro-card">
+        <h2>Factoring quadratics before cancelling</h2>
+        <p>Factor any quadratic expressions — look out for the difference of two squares ($p^2x^2-q^2y^2=(px-qy)(px+qy)$) and trinomials that factor into two linear brackets. Then cancel the common linear factor.</p>
+        <p>Example: $\dfrac{4a^2-9b^2}{2a-3b} = \dfrac{(2a-3b)(2a+3b)}{2a-3b} = 2a+3b$</p>
+      </div>
+      <div class="question-selector" id="t4-qsel"></div>
+      <div id="t4-problem"></div>
+    </div>
+
+    <!-- REPORT -->
+    <div id="sec-summary" class="section">
+      <div id="summary-content"></div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /app -->
+
+<script>
+/* ═══════════════ TITLE SCREEN LOGIC ═══════════════ */
+
+/* ── Published URL of this assessment — update this when you re-publish ── */
+const ASSESSMENT_URL = 'PASTE_YOUR_PUBLISHED_URL_HERE';
+function checkNameField(){
+  const n=document.getElementById('stu-name').value.trim();
+  const c=document.getElementById('stu-class').value.trim();
+  document.getElementById('start-btn').disabled = !(n && c);
+}
+function startApp(){
+  const n=document.getElementById('stu-name').value.trim();
+  const c=document.getElementById('stu-class').value.trim();
+  if(!n||!c){ document.getElementById('name-warn').style.display='block'; return; }
+  document.getElementById('student-tag').textContent = n+' · '+c;
+  document.getElementById('title-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  showSec('t1');
+}
+
+/* ═══════════════ MATH HELPERS ═══════════════ */
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a||1;}
+function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function pick(arr){return arr[randInt(0,arr.length-1)];}
+function pickTwoDistinct(arr){const a=pick(arr);let b=pick(arr);while(b===a)b=pick(arr);return[a,b];}
+function pickThreeDistinct(arr){const pool=[...arr];const out=[];for(let i=0;i<3;i++){const idx=randInt(0,pool.length-1);out.push(pool[idx]);pool.splice(idx,1);}return out;}
+function signed(n){return n<0?` - ${Math.abs(n)}`:` + ${n}`;}
+function coefStr(n,sym){ // e.g. coefStr(1,'a')='a', coefStr(-1,'a')='-a', coefStr(3,'a')='3a'
+  if(n===1) return sym; if(n===-1) return '-'+sym; return n+sym;
+}
+
+/* ═══════════════ TYPESET HELPER ═══════════════ */
+function typeset(el){ if(window.MathJax && window.MathJax.typesetPromise){ window.MathJax.typesetPromise([el]).catch(()=>{}); } }
+
+/* ═══════════════ ANSWER NORMALISATION ═══════════════ */
+/* Canonical form for a single monomial: sort variable factors alphabetically.
+   e.g. "4y^2m" → "4my^2",  "kx^3" → "kx^3",  "3b" → "3b"  */
+function normMono(s){
+  const neg=s.startsWith('-'); const t=neg?s.slice(1):s;
+  const nm=t.match(/^(\d+)/); const coef=nm?nm[1]:''; let r=nm?t.slice(coef.length):t;
+  const vars=[]; let pos=0;
+  while(pos<r.length){const m=r.slice(pos).match(/^[a-z](?:\^\d+)?/);if(!m)break;vars.push(m[0]);pos+=m[0].length;}
+  vars.sort();
+  return (neg?'-':'')+coef+vars.join('');
+}
+/* Apply monomial normalisation only to pure-monomial parts (no +/- inside) */
+function normPart(p){return/^-?[\da-z^]+$/.test(p)?normMono(p):p;}
+
+function norm(s){
+  s=s.toString().toLowerCase()
+    .replace(/\s+/g,'')
+    .replace(/\\dfrac|\\frac/g,'')
+    .replace(/[{}]/g,'')
+    .replace(/\*/g,'')
+    .replace(/[–—−]/g,'-')
+    .replace(/\\times/g,'')
+    .replace(/÷/g,'/');           // ÷ is interchangeable with /
+  // Sort variable factors in each monomial part of a fraction (or standalone)
+  const si=s.indexOf('/');
+  s=si===-1?normPart(s):normPart(s.slice(0,si))+'/'+normPart(s.slice(si+1));
+  // ── Bracket normalisation ──
+  // Rule 1: a/(b) → a/b  ONLY when b is a single term (no + or - inside)
+  s=s.replace(/\/\(([^()+\-]+)\)/g,'/$1');
+  // Rule 2: (a)/b → a/b  ONLY when a is a single term
+  s=s.replace(/^\(([^()+\-]+)\)\//,'$1/');
+  // Rule 3: (a/b)+c → a/b+c  ONLY when a/b is a single-term fraction
+  s=s.replace(/^\(([^()+\-]+)\)([+\-].+)$/,'$1$2');
+  return s;
+}
+function match(inp,accept){const n=norm(inp);return accept.some(a=>norm(a)===n);}
+
+/* ═══════════════ ATTEMPT RECORDING ═══════════════ */
+const RECORD={}; // key → wrong-attempt count
+function recKey(tp,qid,g){return `${tp}|${qid}|${g}`;}
+function addWrong(tp,qid,g){const k=recKey(tp,qid,g);RECORD[k]=(RECORD[k]||0)+1;}
+function getWrongs(tp,qid,g){return RECORD[recKey(tp,qid,g)]||0;}
+// substepStatus returns 'first'|'retry'|'shown'|'blank'
+function substepStatus(tp,qid,g){
+  const store=STORE[tp][qid]; if(!store) return 'blank';
+  const ss=store.substeps[g]; if(!ss||!ss.done) return 'blank';
+  if(ss.val!=='') return getWrongs(tp,qid,g)===0?'first':'retry';
+  return 'shown';
+}
+
+/* ═══════════════ GENERIC STEP ENGINE ═══════════════ */
+let STORE={t1:{},t2:{},t3:{},t4:{}};
+
+function initState(type,id,steps){
+  const store=STORE[type];
+  if(!store[id]){
+    let ss=[]; steps.forEach(step=>step.substeps.forEach(()=>ss.push({done:false,val:''})));
+    store[id]={current:0,substeps:ss};
+  }
+}
+function getTot(steps){let t=0;steps.forEach(s=>t+=s.substeps.length);return t;}
+function getDone(type,id){const store=STORE[type]; if(!store[id])return 0; return store[id].substeps.filter(x=>x.done).length;}
+
+function buildQsel(type,questions,cid,renderFn){
+  const sel=document.getElementById(cid); sel.innerHTML='';
+  questions.forEach((q,i)=>{
+    const b=document.createElement('button');
+    b.className='q-btn'+(i===0?' q'+type:'');
+    b.textContent=q.label;
+    b.onclick=()=>{sel.querySelectorAll('.q-btn').forEach(x=>x.classList.remove('qt1','qt2','qt3','qt4'));b.classList.add('q'+type);renderFn(q);};
+    sel.appendChild(b);
+  });
+  renderFn(questions[0]);
+}
+
+function renderProblem(type,q,containerId){
+  const steps=q.steps;
+  initState(type,q.id,steps);
+  const st=STORE[type][q.id];
+  const total=getTot(steps), done=getDone(type,q.id), allDone=done===total;
+
+  let gIdx=0;
+  let html=`<div class="problem-card">
+    <div class="progress-bar"><div class="progress-fill pf-${type}" style="width:${Math.round(done/total*100)}%"></div></div>
+    <div class="progress-label">${done} of ${total} sub-steps complete</div>
+    <p class="simplify-label">Simplify:</p>
+    <div class="problem-eqns">$$\\dfrac{${q.numLatex}}{${q.denLatex}}$$</div>`;
+
+  steps.forEach(step=>{
+    const fg=gIdx;
+    const stepDone=step.substeps.every((_,xi)=>st.substeps[fg+xi]&&st.substeps[fg+xi].done);
+    const stepLocked=st.current<fg;
+    html+=`<div class="step ${stepDone?'completed-'+type:''} ${stepLocked?'locked':''}">
+      <div class="step-header">
+        <div class="step-num sn-${type}">${step.num}</div>
+        <div class="step-title">${step.title}</div>
+        ${stepDone?`<span class="done-mark done-${type}">✓</span>`:''}
+      </div>`;
+    step.substeps.forEach((sub,xi)=>{
+      const g=fg+xi;
+      const subDone=st.substeps[g]&&st.substeps[g].done;
+      const subLocked=st.current<g;
+      const savedVal=st.substeps[g]?st.substeps[g].val:'';
+      html+=`<div class="substep ss-${type}" style="${subLocked?'opacity:0.38;pointer-events:none':''}">
+        <div class="substep-label">${sub.label||''}</div>`;
+      if(sub.instruction) html+=`<div class="substep-instruction">${sub.instruction}</div>`;
+      if(sub.working) html+=`<div class="working-line">$$${sub.working}$$</div>`;
+      html+=`<div class="answer-row">
+        <input class="answer-input${subDone&&savedVal?' correct-'+type:''}" id="${q.id}-i-${g}" type="text"
+          placeholder="Your answer…" value="${subDone&&savedVal?savedVal:''}" ${subDone?'disabled':''}
+          autocapitalize="none" autocorrect="off" autocomplete="off" spellcheck="false">
+        <button class="check-btn" onclick="checkSub('${type}','${q.id}',${g})">Check</button>
+        <button class="show-btn" onclick="showSub('${type}','${q.id}',${g})">Show</button>
+      </div>
+      <div class="feedback" id="${q.id}-fb-${g}"></div>
+      <div class="revealed" id="${q.id}-rv-${g}">$$${sub.reveal}$$</div>
+      </div>`;
+      gIdx++;
+    });
+    html+=`</div>`;
+  });
+
+  if(allDone){
+    html+=`<div class="solution-summary sol-${type}">
+      <p>Simplified Fraction</p>
+      <span class="sol-val sv-${type}">$$${q.finalLatex}$$</span>
+    </div>`;
+  }
+  html+=`</div>`;
+  // ── Navigation buttons ──
+  const _qs={t1:T1Q,t2:T2Q,t3:T3Q,t4:T4Q}[type]||[];
+  const _qi=_qs.findIndex(x=>x.id===q.id);
+  const _qt=_qs.length;
+  html+=`<div class="q-nav">
+    <button class="q-nav-btn" style="${_qi<=0?'visibility:hidden':''}" onclick="navigateQ('${type}','prev')">← Previous</button>
+    <span class="q-nav-pos">${_qi>=0?(_qi+1)+' of '+_qt:''}</span>
+    <button class="q-nav-btn q-nav-next" onclick="navigateQ('${type}','next')">${_qi>=_qt-1?'Next Section →':'Next Question →'}</button>
+  </div>`;
+  const el=document.getElementById(containerId);
+  el.innerHTML=html;
+  typeset(el);
+}
+
+/* ── Question navigation ── */
+function navigateQ(type, dir){
+  const qs={t1:T1Q,t2:T2Q,t3:T3Q,t4:T4Q}[type];
+  if(!qs) return;
+  const idx=qs.findIndex(q=>q.id===Q[type]?.id);
+  function goTo(newIdx){
+    const nq=qs[newIdx];
+    Q[type]=nq;
+    const sel=document.getElementById(type+'-qsel');
+    if(sel) sel.querySelectorAll('.q-btn').forEach((b,i)=>{
+      b.classList.remove('qt1','qt2','qt3','qt4');
+      if(i===newIdx) b.classList.add('q'+type);
+    });
+    renderProblem(type,nq,type+'-problem');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  if(dir==='prev' && idx>0){ goTo(idx-1); }
+  else if(dir==='next'){
+    if(idx<qs.length-1){ goTo(idx+1); }
+    else { showSec({t1:'t2',t2:'t3',t3:'t4',t4:'summary'}[type]||'summary'); window.scrollTo({top:0,behavior:'smooth'}); }
+  }
+}
+
+const Q={t1:null,t2:null,t3:null,t4:null};
+function rerender(type){ renderProblem(type, Q[type], type+'-problem'); }
+
+/* Scroll the next unanswered input to the centre of the viewport and focus it.
+   Called after every successful Check or Show so students don't have to hunt for
+   the next field on any screen size (laptop, tablet, mobile portrait/landscape). */
+function focusNextInput(type){
+  const el=document.getElementById(type+'-problem');
+  if(!el) return;
+  const inp=el.querySelector('input.answer-input:not([disabled])');
+  if(!inp) return;
+  // Centre first; use preventScroll so the browser doesn't auto-scroll to top of input
+  inp.scrollIntoView({behavior:'smooth', block:'center'});
+  inp.focus({preventScroll:true});
+  // MathJax re-typesetting shifts the layout slightly; re-centre once it settles
+  setTimeout(()=>{
+    inp.scrollIntoView({behavior:'smooth', block:'center'});
+  }, 380);
+}
+
+function checkSub(type,qid,gIdx){
+  const q=Q[type];
+  let g=0,sub=null;
+  outer:for(const step of q.steps){for(const ss of step.substeps){if(g===gIdx){sub=ss;break outer;}g++;}}
+  const inp=document.getElementById(`${qid}-i-${gIdx}`);
+  const fb=document.getElementById(`${qid}-fb-${gIdx}`);
+  const val=inp?inp.value.trim():'';
+  if(!val)return;
+  if(match(val,sub.accept)){
+    fb.className='feedback fb-ok'; fb.textContent='✓ Correct!'; fb.style.display='block';
+    const st=STORE[type][qid];
+    st.substeps[gIdx].done=true; st.substeps[gIdx].val=val;
+    if(gIdx+1>st.current) st.current=gIdx+1;
+    setTimeout(()=>{ rerender(type); setTimeout(()=>focusNextInput(type),220); },500);
+  } else {
+    addWrong(type,qid,gIdx);
+    fb.className='feedback fb-ng';
+    fb.innerHTML=sub.hint?'Not quite. Hint: '+sub.hint:'Not quite — check your working and try again.';
+    fb.style.display='block'; typeset(fb);
+  }
+}
+function showSub(type,qid,gIdx){
+  const rv=document.getElementById(`${qid}-rv-${gIdx}`);
+  rv.style.display='block'; typeset(rv);
+  const fb=document.getElementById(`${qid}-fb-${gIdx}`);
+  fb.className='feedback fb-hint'; fb.textContent='Working shown — study it, then continue.'; fb.style.display='block';
+  const st=STORE[type][qid];
+  st.substeps[gIdx].done=true; st.substeps[gIdx].val='';
+  if(gIdx+1>st.current) st.current=gIdx+1;
+  setTimeout(()=>{ rerender(type); setTimeout(()=>focusNextInput(type),220); },600);
+}
+
+function showSec(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active-t1','active-t2','active-t3','active-t4','active-sum'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.getElementById('navbtn-'+id).classList.add(id==='summary'?'active-sum':'active-'+id);
+  if(id==='summary'){ maybeRegenerate(); renderSummary(); }
+}
+
+/* ═══════════════ TAB 1: NUMERIC FRACTIONS (fixed set) ═══════════════ */
+const T1_PAIRS=[[6,9],[12,21],[28,49],[24,64],[36,63]];
+function genT1(){
+  return T1_PAIRS.map(([num,den],i)=>{
+    const g=gcd(num,den), sn=num/g, sd=den/g;
+    return {
+      id:'t1-'+i, label:'Q'+(i+1),
+      numLatex:String(num), denLatex:String(den),
+      finalLatex:`\\dfrac{${sn}}{${sd}}`,
+      steps:[
+        {title:'Find the HCF',num:1,substeps:[
+          {label:'Highest Common Factor',instruction:`What is the HCF of ${num} and ${den}?`,hint:`List the factors of ${num} and ${den} and find the largest one they share.`,answer:String(g),accept:[String(g)],reveal:`\\text{HCF}(${num},\\,${den})=${g}`}
+        ]},
+        {title:'Simplify to lowest terms',num:2,substeps:[
+          {label:'Divide by the HCF',instruction:`Divide the numerator and denominator by the HCF of ${g}. Write the fraction in its lowest terms (e.g. 1/2).`,working:`\\dfrac{${num}}{${den}} = \\dfrac{${g} \\times ${sn}}{${g} \\times ${sd}} = \\dfrac{\\cancelto{1}{${g}} \\times ${sn}}{\\cancelto{1}{${g}} \\times ${sd}}`,hint:`After dividing by ${g}: numerator becomes ${sn}, denominator becomes ${sd}.`,answer:`${sn}/${sd}`,accept:[`${sn}/${sd}`],reveal:`\\dfrac{\\cancelto{1}{${g}} \\times ${sn}}{\\cancelto{1}{${g}} \\times ${sd}} = \\dfrac{${sn}}{${sd}}`}
+        ]}
+      ]
+    };
+  });
+}
+
+/* ═══════════════ TAB 2: BASIC VARIABLE FRACTIONS (6 questions) ═══════════════ */
+const VARLETTERS=['x','y','z','m','n','p','q','k'];
+
+/* ── T2 LaTeX helpers ── */
+function vt(L,e){ if(!e||e<=0)return''; if(e===1)return L; return `${L}^{${e}}`; }
+function pJoin(parts){ return parts.length ? parts.join(' \\times ') : '1'; }
+
+// Standard notation (no ×): 6x^3y^2
+function numStd(coeff, vars){
+  const hasV=vars.some(v=>v.n>0); const p=[];
+  if(coeff!==1||!hasV) p.push(String(coeff));
+  vars.forEach(v=>{ if(v.n>0) p.push(vt(v.L,v.n)); });
+  return p.join('')||'1';
+}
+function denStd(coeff, vars){
+  const hasV=vars.some(v=>v.d>0); const p=[];
+  if(coeff!==1||!hasV) p.push(String(coeff));
+  vars.forEach(v=>{ if(v.d>0) p.push(vt(v.L,v.d)); });
+  return p.join('')||'1';
+}
+
+// Product notation with ×: 2 \times x^3 \times y^2 (for working lines)
+function fracProd(nc,dc,vars){
+  const nP=[],dP=[];
+  if(nc!==1) nP.push(String(nc));
+  if(dc!==1) dP.push(String(dc));
+  vars.forEach(v=>{ if(v.n>0) nP.push(vt(v.L,v.n)); if(v.d>0) dP.push(vt(v.L,v.d)); });
+  return `\\dfrac{${pJoin(nP)}}{${pJoin(dP)}}`;
+}
+// fracStd for working context
+function fracStd2(nc,dc,vars){
+  return `\\dfrac{${numStd(nc,dc,vars)||numStd(nc,dc,vars)}}{${denStd(nc,dc,vars)}}`;
+}
+
+// Numeric expansion/cancellation: show g_n × pN × vars
+function numExpandTex(g_n,pN,qN,vars){
+  const nP=[String(g_n)]; if(pN!==1) nP.push(String(pN));
+  vars.forEach(v=>{ if(v.n>0) nP.push(vt(v.L,v.n)); });
+  const dP=[String(g_n)]; if(qN!==1) dP.push(String(qN));
+  vars.forEach(v=>{ if(v.d>0) dP.push(vt(v.L,v.d)); });
+  return `\\dfrac{${pJoin(nP)}}{${pJoin(dP)}}`;
+}
+function numCancelTex(g_n,pN,qN,vars){
+  const nP=[`\\cancelto{1}{${g_n}}`]; if(pN!==1) nP.push(String(pN));
+  vars.forEach(v=>{ if(v.n>0) nP.push(vt(v.L,v.n)); });
+  const dP=[`\\cancelto{1}{${g_n}}`]; if(qN!==1) dP.push(String(qN));
+  vars.forEach(v=>{ if(v.d>0) dP.push(vt(v.L,v.d)); });
+  return `\\dfrac{${pJoin(nP)}}{${pJoin(dP)}}`;
+}
+
+// Variable expansion/cancellation at index idx with HCF exponent gv
+function varExpandTex(nc,dc,vars,idx,gv){
+  const nP=[],dP=[];
+  if(nc!==1) nP.push(String(nc)); if(dc!==1) dP.push(String(dc));
+  vars.forEach((v,j)=>{
+    if(j===idx){
+      if(v.n>0){ nP.push(vt(v.L,gv)); const r=v.n-gv; if(r>0) nP.push(vt(v.L,r)); }
+      if(v.d>0){ dP.push(vt(v.L,gv)); const r=v.d-gv; if(r>0) dP.push(vt(v.L,r)); }
+    } else {
+      if(v.n>0) nP.push(vt(v.L,v.n)); if(v.d>0) dP.push(vt(v.L,v.d));
+    }
+  });
+  return `\\dfrac{${pJoin(nP)}}{${pJoin(dP)}}`;
+}
+function varCancelTex(nc,dc,vars,idx,gv){
+  const nP=[],dP=[];
+  if(nc!==1) nP.push(String(nc)); if(dc!==1) dP.push(String(dc));
+  vars.forEach((v,j)=>{
+    if(j===idx){
+      const cv=`\\cancelto{1}{${vt(v.L,gv)}}`;
+      if(v.n>0){ nP.push(cv); const r=v.n-gv; if(r>0) nP.push(vt(v.L,r)); }
+      if(v.d>0){ dP.push(cv); const r=v.d-gv; if(r>0) dP.push(vt(v.L,r)); }
+    } else {
+      if(v.n>0) nP.push(vt(v.L,v.n)); if(v.d>0) dP.push(vt(v.L,v.d));
+    }
+  });
+  return `\\dfrac{${pJoin(nP)}}{${pJoin(dP)}}`;
+}
+
+/* ── T2 core data generator ── */
+function buildT2Core(nVars){
+  const letters=[...VARLETTERS].sort(()=>Math.random()-0.5).slice(0,nVars);
+  let g_n=randInt(2,9), pN=randInt(2,9), qN=randInt(2,9);
+  while(gcd(pN,qN)!==1) qN=randInt(2,9);
+  const numCoeff=pN*g_n, denCoeff=qN*g_n;
+  // Each variable must appear in both num and den (exponent ≥ 1)
+  const vd=letters.map(L=>{ const n=randInt(1,4),d=randInt(1,4); return {L,n,d,g:Math.min(n,d)}; });
+  const origVars=vd.map(v=>({L:v.L,n:v.n,d:v.d}));
+  // Build progressive states: statesAfter[0]=after numeric cancel; statesAfter[i+1]=after var[i] also cancelled
+  const statesAfter=[{nc:pN,dc:qN,vars:origVars.map(v=>({...v}))}];
+  for(let i=0;i<nVars;i++){
+    const prev=statesAfter[i];
+    statesAfter.push({nc:pN,dc:qN,vars:prev.vars.map((v,j)=>j===i?{L:v.L,n:v.n-vd[i].g,d:v.d-vd[i].g}:{...v})});
+  }
+  const fin=statesAfter[nVars];
+  const hasNV=fin.vars.some(v=>v.n>0), hasDV=fin.vars.some(v=>v.d>0);
+  const fnP=[],fdP=[];
+  if(pN!==1||!hasNV) fnP.push(String(pN));
+  if(qN!==1||!hasDV) fdP.push(String(qN));
+  fin.vars.forEach(v=>{ if(v.n>0) fnP.push(vt(v.L,v.n)); if(v.d>0) fdP.push(vt(v.L,v.d)); });
+  const finalNum=fnP.join('')||'1', finalDen=fdP.join('')||'1';
+  const finalAnswer=finalDen==='1'?finalNum:`${finalNum}/${finalDen}`;
+  const finalLatex=finalDen==='1'?finalNum:`\\dfrac{${finalNum}}{${finalDen}}`;
+  const complexity=nVars*10+vd.reduce((s,v)=>s+v.n+v.d,0)+(numCoeff>9?2:0)+(denCoeff>9?2:0);
+  return {numCoeff,denCoeff,g_n,pN,qN,vd,origVars,statesAfter,finalAnswer,finalLatex,finalNum,finalDen,complexity,
+    numLatex:numStd(numCoeff,origVars), denLatex:denStd(denCoeff,origVars)};
+}
+
+/* ── Build substep list (shared by detailed & compressed) ── */
+function buildT2Substeps(core){
+  const {numCoeff,denCoeff,g_n,pN,qN,vd,origVars,statesAfter,finalAnswer,finalLatex,finalNum,finalDen}=core;
+  const subs=[];
+
+  // Substep A: HCF of numeric coefficients
+  subs.push({
+    label:`HCF of ${numCoeff} and ${denCoeff}`,
+    instruction:`What is the HCF of the numeric coefficients ${numCoeff} and ${denCoeff}?`,
+    hint:`List the factors of ${numCoeff} and ${denCoeff} and find the largest common one.`,
+    answer:String(g_n), accept:[String(g_n)],
+    reveal:`\\text{HCF}(${numCoeff},\\,${denCoeff})=${g_n}`
+  });
+
+  // Substep B..N: HCF of each variable, preceded by display of the previous cancellation
+  vd.forEach((v,i)=>{
+    const varHCF=v.g===1?v.L:`${v.L}^{${v.g}}`;
+    const accept=v.g===1?[v.L,`${v.L}^1`,`${v.L}^{1}`]:[`${v.L}^${v.g}`,`${v.L}^{${v.g}}`];
+
+    // Working: show the PRECEDING cancellation as context before asking for this HCF
+    let working;
+    if(i===0){
+      // Show the numeric cancellation
+      working=`\\dfrac{${numStd(numCoeff,origVars)}}{${denStd(denCoeff,origVars)}} = ${numExpandTex(g_n,pN,qN,origVars)} = ${numCancelTex(g_n,pN,qN,origVars)}`;
+    } else {
+      // Show the previous variable's cancellation
+      const prevSt=statesAfter[i-1];
+      working=`${fracProd(prevSt.nc,prevSt.dc,prevSt.vars)} = ${varExpandTex(prevSt.nc,prevSt.dc,prevSt.vars,i-1,vd[i-1].g)} = ${varCancelTex(prevSt.nc,prevSt.dc,prevSt.vars,i-1,vd[i-1].g)}`;
+    }
+
+    // Reveal: show the expansion and cancellation for THIS variable
+    const st=statesAfter[i];
+    const reveal=`${fracProd(st.nc,st.dc,st.vars)} = ${varExpandTex(st.nc,st.dc,st.vars,i,v.g)} = ${varCancelTex(st.nc,st.dc,st.vars,i,v.g)}`;
+
+    subs.push({
+      label:`HCF of $${vt(v.L,v.n)}$ and $${vt(v.L,v.d)}$`,
+      instruction:`What is the HCF of $${vt(v.L,v.n)}$ (numerator) and $${vt(v.L,v.d)}$ (denominator)?`,
+      working,
+      hint:`Compare the exponent of $${v.L}$ in the numerator (${v.n}) and denominator (${v.d}). The HCF is $${v.L}$ raised to the smaller exponent.`,
+      answer:varHCF, accept,
+      reveal
+    });
+  });
+
+  // Final substep: write lowest terms (working shows last variable's cancellation)
+  const lastI=vd.length-1;
+  const lastSt=statesAfter[lastI];
+  const finalWorking=`${fracProd(lastSt.nc,lastSt.dc,lastSt.vars)} = ${varExpandTex(lastSt.nc,lastSt.dc,lastSt.vars,lastI,vd[lastI].g)} = ${varCancelTex(lastSt.nc,lastSt.dc,lastSt.vars,lastI,vd[lastI].g)}`;
+  subs.push({
+    label:'Lowest terms',
+    instruction:`All common factors have been divided out. Write the fraction in its lowest terms (e.g. 2x/3y).`,
+    working:finalWorking,
+    hint:`The simplified numerator is $${finalNum}$ and the denominator is $${finalDen}$.`,
+    answer:finalAnswer, accept:[finalAnswer],
+    reveal:`= ${finalLatex}`
+  });
+
+  return subs;
+}
+
+/* ── Detailed (Q1–Q2): each HCF is a separate numbered step ── */
+function buildT2Detailed(nVars){
+  const core=buildT2Core(nVars);
+  const subs=buildT2Substeps(core);
+  // First substep → Step 1; each subsequent HCF substep → its own step; final substep → last step
+  const steps=[];
+  // Step 1: numeric HCF
+  steps.push({title:'Find the HCF of the numeric coefficients',num:1,substeps:[subs[0]]});
+  // Steps 2..nVars+1: one per variable
+  core.vd.forEach((v,i)=>{
+    steps.push({title:`Find the HCF of the powers of $${v.L}$`,num:i+2,substeps:[subs[i+1]]});
+  });
+  // Final step
+  steps.push({title:'Write the fraction in its lowest terms',num:core.vd.length+2,substeps:[subs[subs.length-1]]});
+  return {steps, ...core};
+}
+
+/* ── Compressed (Q3–Q6): all substeps inside one numbered step ── */
+function buildT2Compressed(nVars){
+  const core=buildT2Core(nVars);
+  const subs=buildT2Substeps(core);
+  const steps=[{title:'Find all common factors and simplify',num:1,substeps:subs}];
+  return {steps, ...core};
+}
+
+function genT2(){
+  const detVars=[1,2], cmpVars=[2,2,2,3];
+  const detailed=detVars.map(nv=>buildT2Detailed(nv));
+  const compressed=cmpVars.map(nv=>buildT2Compressed(nv));
+  detailed.sort((a,b)=>a.complexity-b.complexity);
+  detailed.forEach((q,i)=>{ q.id='t2-'+i; q.label='Q'+(i+1); });
+  compressed.sort((a,b)=>a.complexity-b.complexity);
+  compressed.forEach((q,i)=>{ q.id='t2-'+(i+2); q.label='Q'+(i+3); });
+  return [...detailed,...compressed];
+}
+
+
+/* ── Finale step helper: identify common factor + cancel visual ── */
+// fNum/fDen: factored fraction parts (LaTeX strings)
+// cf: the common factor as it appears in instruction $...$ (string)
+// cfAccept: accepted answers for "identify common factor"
+// cNum/cDen: numerator/denominator with \\cancelto{1}{} inserted
+// finalAns: student-typed answer string; finalAccept: array; finalLtx: LaTeX for reveal
+function finaleStep(num, fNum, fDen, cf, cfAccept, cNum, cDen, finalAns, finalAccept, finalLtx, cfHint){
+  return {
+    title:'Simplify the fraction', num,
+    substeps:[
+      {label:'Identify the common factor',
+       instruction:`Both parts of the fraction are now fully factorized. What is the common factor?`,
+       working:`\\dfrac{${fNum}}{${fDen}}`,
+       hint:cfHint||`Look for the same expression in both numerator and denominator.`,
+       answer:cfAccept[0], accept:cfAccept,
+       reveal:`\\text{Common factor: }${cf}`},
+      {label:'Write the fraction in its lowest terms',
+       instruction:`Divide the numerator and denominator by $${cf}$ and write the fraction in its lowest terms. ("Cancel" the common factor.)`,
+       working:`\\dfrac{${cNum}}{${cDen}}`,
+       hint:`After cancelling $${cf}$, what expressions remain in the numerator and denominator?`,
+       answer:finalAns, accept:finalAccept,
+       reveal:`\\dfrac{${cNum}}{${cDen}} = ${finalLtx}`}
+    ]
+  };
+}
+
+
+/* ═══════════════ TAB 3: LINEAR FACTORING (4 randomized) ═══════════════ */
+function t3_templateA(){
+  // (K*var + C) / g  where K=g*p, C=g*q
+  const v=pick(VARLETTERS);
+  const g=randInt(2,9); let p=randInt(2,9), qn=randInt(2,9);
+  while(gcd(p,qn)!==1) qn=randInt(2,9);
+  const K=g*p, C=g*qn;
+  const numLatex=`${coefStr(K,v)}${signed(C)}`;
+  const denLatex=`${g}`;
+  const factoredNum=`${g}(${coefStr(p,v)}${signed(qn)})`;
+  const simplified=`${coefStr(p,v)}${signed(qn)}`;
+  return {
+    numLatex, denLatex, finalLatex:simplified, complexity:1,
+    steps:[
+      {title:'Factorize the numerator',num:1,substeps:[
+        {label:'Common factor',instruction:`Factorize the numerator completely (take out the common numeric factor).`,hint:`Both ${K} and ${C} share a common factor.`,answer:factoredNum,accept:[factoredNum],reveal:`${numLatex}=${factoredNum}`}
+      ]},
+      finaleStep(2,
+        factoredNum, denLatex, String(g), [String(g)],
+        `\\cancelto{1}{${g}}(${coefStr(p,v)}${signed(qn)})`, `\\cancelto{1}{${g}}`,
+        simplified, [simplified], simplified,
+        `The number ${g} appears in both the factorized numerator and the denominator.`)
+    ]
+  };
+}
+function t3_templateB(){
+  // K / (M*a - N*b), g=gcd(K,M,N)
+  // Enforce gcd(m,n)=1 so (ma-nb) cannot be factored further after dividing by g
+  const [a,b]=pickTwoDistinct(VARLETTERS);
+  const g=randInt(2,6), k=randInt(1,5);
+  let m=randInt(2,9), n=randInt(2,9);
+  while(gcd(m,n)!==1){m=randInt(2,9); n=randInt(2,9);}
+  const K=g*k, M=g*m, N=g*n;
+  const numLatex=`${K}`;
+  const denLatex=`${coefStr(M,a)}${signed(-N)}${b}`; // M a - N b
+  const denLatexFix=`${coefStr(M,a)} - ${N}${b}`;
+  const factoredDen=`${g}(${coefStr(m,a)} - ${n}${b})`;
+  const simplified= k===1 ? `1/(${coefStr(m,a)}-${n}${b})` : `${k}/(${coefStr(m,a)}-${n}${b})`;
+  const simplifiedLatex=`\\dfrac{${k}}{${coefStr(m,a)} - ${n}${b}}`;
+  return {
+    numLatex, denLatex:denLatexFix, finalLatex:simplifiedLatex, complexity:2,
+    steps:[
+      {title:'Factorize the denominator',num:1,substeps:[
+        {label:'Common numeric factor',instruction:`Factorize the denominator completely (take out the common numeric factor).`,hint:`${M} and ${N} share a common factor.`,answer:factoredDen,accept:[factoredDen],reveal:`${denLatexFix}=${factoredDen}`}
+      ]},
+      finaleStep(2,
+        numLatex, factoredDen, String(g), [String(g)],
+        k===1?`\\cancelto{1}{${g}}`:`${k}\\cancelto{1}{${g}}`, `\\cancelto{1}{${g}}(${coefStr(m,a)} - ${n}${b})`,
+        simplified, [simplified], simplifiedLatex,
+        `${K} = ${g}\\times${k}, and the denominator contains the factor ${g}.`)
+    ]
+  };
+}
+function t3_templateC(){
+  // K*a*b / (a^2 + M*a)
+  const [a,b]=pickTwoDistinct(VARLETTERS);
+  const k=randInt(2,9), m=randInt(2,9);
+  const numLatex=`${k===1?'':k}${a}${b}`;
+  const denLatex=`${a}^2${signed(m)}${a}`;
+  const factoredDen=`${a}(${a}${signed(m)})`;
+  const simplified=`${coefStr(k,b)}/(${a}${signed(m)})`;
+  return {
+    numLatex, denLatex, finalLatex:`\\dfrac{${coefStr(k,b)}}{${a}${signed(m)}}`, complexity:2,
+    steps:[
+      {title:'Factorize the denominator',num:1,substeps:[
+        {label:`Common factor of $${a}$`,instruction:`Factorize the denominator completely.`,hint:`Both terms contain $${a}$.`,answer:factoredDen,accept:[factoredDen],reveal:`${denLatex}=${factoredDen}`}
+      ]},
+      finaleStep(2,
+        numLatex, factoredDen, a, [a],
+        `${k}${b}\\cancelto{1}{${a}}`, `\\cancelto{1}{${a}}(${a}${signed(m)})`,
+        simplified, [simplified], `\\dfrac{${coefStr(k,b)}}{${a}${signed(m)}}`,
+        `$${a}$ appears in the numerator $${numLatex}$ and in the factorized denominator.`)
+    ]
+  };
+}
+function t3_templateD(){
+  // (a^2 - K*a) / (a*b - K*b)
+  const [a,b]=pickTwoDistinct(VARLETTERS);
+  const k=randInt(2,9);
+  const numLatex=`${a}^2 - ${k}${a}`;
+  const denLatex=`${a}${b} - ${k}${b}`;
+  const factoredNum=`${a}(${a}-${k})`;
+  const factoredDen=`${b}(${a}-${k})`;
+  const simplified=`${a}/${b}`;
+  return {
+    numLatex, denLatex, finalLatex:`\\dfrac{${a}}{${b}}`, complexity:3,
+    steps:[
+      {title:'Factorize the numerator',num:1,substeps:[
+        {label:`Common factor of $${a}$`,instruction:`Factorize the numerator completely.`,hint:`Both terms contain $${a}$.`,answer:factoredNum,accept:[factoredNum],reveal:`${numLatex}=${factoredNum}`}
+      ]},
+      {title:'Factorize the denominator',num:2,substeps:[
+        {label:`Common factor of $${b}$`,instruction:`Factorize the denominator completely.`,hint:`Both terms contain $${b}$.`,answer:factoredDen,accept:[factoredDen],reveal:`${denLatex}=${factoredDen}`}
+      ]},
+      finaleStep(3,
+        factoredNum, factoredDen, `(${a}-${k})`, [`(${a}-${k})`,`${a}-${k}`],
+        `${a}\\cancelto{1}{(${a}-${k})}`, `${b}\\cancelto{1}{(${a}-${k})}`,
+        simplified, [simplified], `\\dfrac{${a}}{${b}}`)
+    ]
+  };
+}
+function t3_templateE(){
+  // Type: single pre-factored common linear factor — no factorisation needed
+  // e.g. (x+6)/[7(x+6)]  or  k(x-2)/[7(x-2)]
+  const v=pick(VARLETTERS);
+  const k=randInt(1,9), sign=pick(['+','-']);
+  const lf=`(${v}${sign}${k})`;       // e.g. (x+6)
+  const lfInner=`${v}${sign}${k}`;    // e.g. x+6
+  const c=randInt(2,9);
+  const sType=pick([0,1]);             // 0: lf / c·lf;  1: w·lf / c·lf
+  let numLatex,denLatex,finalAnswer,finalLatex,numOuter;
+  if(sType===0){
+    numLatex=lf; denLatex=`${c}${lf}`;
+    numOuter='1'; finalAnswer=`1/${c}`; finalLatex=`\\dfrac{1}{${c}}`;
+  } else {
+    const w=pick(VARLETTERS.filter(x=>x!==v));
+    numLatex=`${w}${lf}`; denLatex=`${c}${lf}`;
+    numOuter=w; finalAnswer=`${w}/${c}`; finalLatex=`\\dfrac{${w}}{${c}}`;
+  }
+  return {
+    numLatex, denLatex, finalLatex, complexity:-1,
+    steps:[
+      {title:'Identify the common linear factor',num:1,substeps:[
+        {label:'Common linear factor',
+         instruction:`What is the common linear factor in both the numerator and the denominator? Include the brackets, e.g. $(${v}+1)$.`,
+         hint:`Look for the bracketed expression that appears in both the numerator and the denominator.`,
+         answer:lf, accept:[lf,lfInner],
+         reveal:`\\text{Common factor: }${lf}`}
+      ]},
+      {title:'Divide by the common linear factor and simplify',num:2,substeps:[
+        {label:'Simplified fraction',
+         instruction:`Divide the numerator and denominator by $${lf}$ and write the simplified fraction.`,
+         working:`\\dfrac{${numOuter==='1'?`\\cancelto{1}{${lf}}`:`${numOuter}\\cancelto{1}{${lf}}`}}{${c}\\cancelto{1}{${lf}}}`,
+         hint:`After dividing by $${lf}$: numerator becomes ${numOuter}, denominator becomes ${c}.`,
+         answer:finalAnswer, accept:[finalAnswer],
+         reveal:`\\dfrac{${numOuter==='1'?`\\cancelto{1}{${lf}}`:`${numOuter}\\cancelto{1}{${lf}}`}}{${c}\\cancelto{1}{${lf}}} = ${finalLatex}`}
+      ]}
+    ]
+  };
+}
+
+function t3_templateF(){
+  // Type: product of two linear factors, one common
+  // e.g. (2a-3)(a+1)/[(a+1)(2a+3)]  or  (2a+3)(a-1)/[(a-1)^2]
+  const v=pick(VARLETTERS);
+  // Common factor: (v ± k1)
+  const k1=randInt(1,9), s1=pick(['+','-']);
+  const cf=`(${v}${s1}${k1})`;
+  const cfInner=`${v}${s1}${k1}`;
+  // Other numerator factor: (p·v ± k2), p ∈ {1,2,3}
+  const p2=pick([1,2,3]), k2=randInt(1,9), s2=pick(['+','-']);
+  const f1=p2===1?`(${v}${s2}${k2})`:`(${p2}${v}${s2}${k2})`;
+  const f1Inner=p2===1?`${v}${s2}${k2}`:`${p2}${v}${s2}${k2}`;
+  // Denominator type: squared common factor  or  cf × different factor
+  const dType=pick(['square','different']);
+  let denLatex,finalAnswer,finalLatex,denRest;
+  if(dType==='square'){
+    denLatex=`${cf}^2`;
+    finalAnswer=`${f1}/${cf}`; finalLatex=`\\dfrac{${f1Inner}}{${cfInner}}`; denRest=cf;
+  } else {
+    const p3=pick([1,2,3]), k3=randInt(1,9), s3=pick(['+','-']);
+    const f3=p3===1?`(${v}${s3}${k3})`:`(${p3}${v}${s3}${k3})`;
+    const f3Inner=p3===1?`${v}${s3}${k3}`:`${p3}${v}${s3}${k3}`;
+    denLatex=`${cf}${f3}`;
+    finalAnswer=`${f1}/${f3}`; finalLatex=`\\dfrac{${f1Inner}}{${f3Inner}}`; denRest=f3;
+  }
+  const cancelWorkF=`\\dfrac{${f1}\\cancelto{1}{${cf}}}{\\cancelto{1}{${cf}}${denRest}}`;
+  return {
+    numLatex:`${f1}${cf}`, denLatex, finalLatex, complexity:0,
+    steps:[
+      {title:'Identify the common linear factor',num:1,substeps:[
+        {label:'Common linear factor',
+         instruction:`What is the common linear factor in the numerator and denominator? Include the brackets, e.g. $(${v}+1)$.`,
+         hint:`Compare each bracket in the numerator with each bracket in the denominator.`,
+         answer:cf, accept:[cf,cfInner],
+         reveal:`\\text{Common factor: }${cf}`}
+      ]},
+      {title:'Divide by the common linear factor and simplify',num:2,substeps:[
+        {label:'Simplified fraction',
+         instruction:`Divide the numerator and denominator by $${cf}$ and write the simplified fraction. Use brackets where needed, e.g. $(2x+1)/(x-3)$.`,
+         working:cancelWorkF,
+         hint:`After dividing by $${cf}$, what remains in the numerator and denominator?`,
+         answer:finalAnswer, accept:[finalAnswer],
+         reveal:`${cancelWorkF} = ${finalLatex}`}
+      ]}
+    ]
+  };
+}
+
+/* ── Q4: HCF = basic variable — both expressions factorise, individual factors are numeric+variable+linear ── */
+function t3_q4_var(){
+  const v=pick(VARLETTERS);
+  let k1=randInt(2,6), k2=randInt(2,6); while(gcd(k1,k2)!==1){k1=randInt(2,6); k2=randInt(2,6);}
+  const p=pick([1,2,3]); let q=randInt(1,8)*pick([1,-1]); while(gcd(p,Math.abs(q))!==1)q=randInt(1,8)*pick([1,-1]);
+  const r=pick([1,2,3]); let s=randInt(1,8)*pick([1,-1]); while(gcd(r,Math.abs(s))!==1||(r===p&&s===q))s=randInt(1,8)*pick([1,-1]);
+  const nA=k1*p, nB=k1*q, dA=k2*r, dB=k2*s;
+  const numLatex=`${nA}${v}^2${sC(nB,v)}`;
+  const denLatex=`${dA}${v}^2${sC(dB,v)}`;
+  const lf1I=`${coefStr(p,v)}${q>=0?'+':''}${q}`;
+  const lf2I=`${coefStr(r,v)}${s>=0?'+':''}${s}`;
+  const numFact=`${coefStr(k1,v)}(${lf1I})`;
+  const denFact=`${coefStr(k2,v)}(${lf2I})`;
+  const finalAns=`${k1}(${lf1I})/(${k2}(${lf2I}))`;
+  const finalLtx=`\\dfrac{${k1}(${lf1I})}{${k2}(${lf2I})}`;
+  const cNum=`${k1}\\cancelto{1}{${v}}(${lf1I})`;
+  const cDen=`${k2}\\cancelto{1}{${v}}(${lf2I})`;
+  return {numLatex, denLatex, finalLatex:finalLtx, complexity:2, steps:[
+    {title:'Factorize the numerator', num:1, substeps:[{
+      label:'Take out all common factors',
+      instruction:'Factorize the numerator completely. Take out all common factors — numeric and variable.',
+      working:numLatex,
+      hint:`Both terms share the common factor $${coefStr(k1,v)}$. What is the remaining bracket?`,
+      answer:numFact, accept:[numFact], reveal:`${numLatex} = ${numFact}`}]},
+    {title:'Factorize the denominator', num:2, substeps:[{
+      label:'Take out all common factors',
+      instruction:'Factorize the denominator completely. Take out all common factors — numeric and variable.',
+      working:denLatex,
+      hint:`Both terms share the common factor $${coefStr(k2,v)}$. What is the remaining bracket?`,
+      answer:denFact, accept:[denFact], reveal:`${denLatex} = ${denFact}`}]},
+    finaleStep(3, numFact, denFact, v, [v],
+      cNum, cDen, finalAns, [finalAns], finalLtx,
+      `$${v}$ appears in both $${numFact}$ and $${denFact}$. Remember to use brackets in your answer, e.g. $${finalAns}$.`)
+  ]};
+}
+
+/* ── Q5: HCF = linear factor — individual factors include numeric + variable + linear ── */
+function t3_q5_lin(){
+  const [v1,v2]=pickTwoDistinct(VARLETTERS);
+  const k1=randInt(2,7), k2=randInt(2,7);
+  const a=pick([1,2,3]); let b=randInt(1,6)*pick([1,-1]); while(gcd(a,Math.abs(b))!==1)b=randInt(1,6)*pick([1,-1]);
+  const lfI=`${coefStr(a,v1)}${b>=0?'+':''}${b}`;
+  const lf=`(${lfI})`;
+  const nA=k1*a, nB=k1*b;
+  const numLatex=`${nA}${v1}^2${sC(nB,v1)}`;
+  const numFact=`${coefStr(k1,v1)}${lf}`;
+  const dA=k2*a, dB=k2*b;
+  const denLatex=`${dA}${v1}${v2}${sC(dB,v2)}`;
+  const denFact=`${coefStr(k2,v2)}${lf}`;
+  const finalAns=`${coefStr(k1,v1)}/${coefStr(k2,v2)}`;
+  const finalLtx=`\\dfrac{${coefStr(k1,v1)}}{${coefStr(k2,v2)}}`;
+  const cNum=`${coefStr(k1,v1)}\\cancelto{1}{${lf}}`;
+  const cDen=`${coefStr(k2,v2)}\\cancelto{1}{${lf}}`;
+  return {numLatex, denLatex, finalLatex:finalLtx, complexity:3, steps:[
+    {title:'Factorize the numerator', num:1, substeps:[{
+      label:'Take out all common factors',
+      instruction:'Factorize the numerator completely. Take out all common factors.',
+      working:numLatex,
+      hint:`Both terms share $${coefStr(k1,v1)}$ as a common factor. What is the remaining bracket?`,
+      answer:numFact, accept:[numFact], reveal:`${numLatex} = ${numFact}`}]},
+    {title:'Factorize the denominator', num:2, substeps:[{
+      label:'Take out all common factors',
+      instruction:'Factorize the denominator completely. Take out all common factors.',
+      working:denLatex,
+      hint:`Both terms share $${coefStr(k2,v2)}$ as a common factor. What is the remaining bracket?`,
+      answer:denFact, accept:[denFact], reveal:`${denLatex} = ${denFact}`}]},
+    finaleStep(3, numFact, denFact, lf, [lf,lfI],
+      cNum, cDen, finalAns, [finalAns], finalLtx)
+  ]};
+}
+
+/* ── Q6: HCF = variable + linear factor — most factors: numeric + variable + linear ── */
+function t3_q6_varlin(){
+  const v=pick(VARLETTERS);
+  let k1=randInt(2,7), k2=randInt(2,7); while(gcd(k1,k2)!==1){k1=randInt(2,7); k2=randInt(2,7);}
+  const a=pick([1,2,3]); let b=randInt(1,6)*pick([1,-1]); while(gcd(a,Math.abs(b))!==1)b=randInt(1,6)*pick([1,-1]);
+  const lfI=`${coefStr(a,v)}${b>=0?'+':''}${b}`;
+  const lf=`(${lfI})`;
+  const nA=k1*a, nB=k1*b;
+  const numLatex=`${nA}${v}^2${sC(nB,v)}`;
+  const numFact=`${coefStr(k1,v)}${lf}`;
+  const dA=k2*a, dB=k2*b;
+  const denLatex=`${dA}${v}^2${sC(dB,v)}`;
+  const denFact=`${coefStr(k2,v)}${lf}`;
+  const hcf=`${v}${lf}`;
+  const finalAns=`${k1}/${k2}`;
+  const finalLtx=`\\dfrac{${k1}}{${k2}}`;
+  const cNum=`${k1}\\cancelto{1}{${v}${lf}}`;
+  const cDen=`${k2}\\cancelto{1}{${v}${lf}}`;
+  return {numLatex, denLatex, finalLatex:finalLtx, complexity:4, steps:[
+    {title:'Factorize the numerator', num:1, substeps:[{
+      label:'Take out all common factors',
+      instruction:'Factorize the numerator completely. Take out all common factors — numeric and variable.',
+      working:numLatex,
+      hint:`Both terms share $${coefStr(k1,v)}$ as a common factor. What is the remaining bracket?`,
+      answer:numFact, accept:[numFact], reveal:`${numLatex} = ${numFact}`}]},
+    {title:'Factorize the denominator', num:2, substeps:[{
+      label:'Take out all common factors',
+      instruction:'Factorize the denominator completely. Take out all common factors — numeric and variable.',
+      working:denLatex,
+      hint:`Both terms share $${coefStr(k2,v)}$ as a common factor. What is the remaining bracket?`,
+      answer:denFact, accept:[denFact], reveal:`${denLatex} = ${denFact}`}]},
+    finaleStep(3, numFact, denFact, hcf, [hcf,`${v}*(${lfI})`],
+      cNum, cDen, finalAns, [finalAns], finalLtx,
+      `Both $${numFact}$ and $${denFact}$ contain $${hcf}$ as a factor.`)
+  ]};
+}
+
+function genT3(){
+  const q1=Object.assign({id:'t3-0',label:'Q1'},t3_templateE());   // pre-factored CF (complexity −1)
+  const q2=Object.assign({id:'t3-1',label:'Q2'},t3_templateF());   // product of linear factors (complexity 0)
+  const q3=Object.assign({id:'t3-2',label:'Q3'},t3_templateA());   // HCF = numeric factor (complexity 1)
+  const q4=Object.assign({id:'t3-3',label:'Q4'},t3_q4_var());      // HCF = basic variable (complexity 2)
+  const q5=Object.assign({id:'t3-4',label:'Q5'},t3_q5_lin());      // HCF = linear factor (complexity 3)
+  const q6=Object.assign({id:'t3-5',label:'Q6'},t3_q6_varlin());   // HCF = variable + linear (complexity 4)
+  return [q1,q2,q3,q4,q5,q6];
+}
+
+
+/* ═══════════════ TAB 4: QUADRATIC EXPRESSIONS (8 fixed question types) ═══════════════ */
+
+/* ── T4 expression helpers ── */
+function lf(v,k){return k>=0?`(${v}+${k})`:`(${v}${k})`;}   // (v+3) or (v-4)
+function lfi(v,k){return k>=0?`${v}+${k}`:`${v}${k}`;}       // v+3 or v-4
+function sC(n,v){                                              // signed coefficient: ' + 3v' or ' - v'
+  if(!n)return''; if(n===1)return` + ${v}`; if(n===-1)return` - ${v}`;
+  return n>0?` + ${n}${v}`:` - ${Math.abs(n)}${v}`;
+}
+function triStr(v,a,b){return `${v}^2${sC(a+b,v)}${signed(a*b)}`;}  // (v+a)(v+b) expanded
+function pSqH(v,a,k){  // (av+k)^2 expanded; a=1 gives standard form
+  const a2=a===1?'':String(a*a);
+  return `${a2}${v}^2${sC(2*a*k,v)} + ${k*k}`;
+}
+function dSqH(v,a,k){  // a^2v^2 - k^2
+  const a2=a===1?'':String(a*a);
+  return `${a2}${v}^2 - ${k*k}`;
+}
+function pSq(v,k){return pSqH(v,1,k);}
+function dSq(v,k){return dSqH(v,1,k);}
+
+/* Q1 — two-variable difference of squares / one linear factor (unchanged) */
+function t4_q1(){
+  const [a,b]=pickTwoDistinct(VARLETTERS);
+  let p=randInt(2,5), q=randInt(2,5); while(q===p)q=randInt(2,5);
+  const nL=`${p*p}${a}^2 - ${q*q}${b}^2`;
+  const dL=`${coefStr(p,a)} - ${q}${b}`;
+  const fN=`(${coefStr(p,a)}-${q}${b})(${coefStr(p,a)}+${q}${b})`;
+  const fNA=`(${coefStr(p,a)}+${q}${b})(${coefStr(p,a)}-${q}${b})`;
+  const ans=`${coefStr(p,a)}+${q}${b}`;
+  const cfStr=`(${coefStr(p,a)}-${q}${b})`;
+  return {numLatex:nL, denLatex:dL, finalLatex:ans, steps:[
+    {title:'Factorize the numerator',num:1,substeps:[
+      {label:'Difference of two squares',instruction:`Factorize the numerator completely (it is a difference of two squares).`,hint:`$a^2-b^2=(a-b)(a+b)$`,answer:fN,accept:[fN,fNA],reveal:`${nL}=${fN}`}
+    ]},
+    finaleStep(2, fN, dL, cfStr, [cfStr,`${coefStr(p,a)}-${q}${b}`],
+      `\\cancelto{1}{${cfStr}}(${coefStr(p,a)}+${q}${b})`, `\\cancelto{1}{${dL}}`,
+      ans, [ans], ans)
+  ]};
+}
+
+/* Q2 — expanded perfect square / linear factor */
+function t4_q2(){
+  const v=pick(VARLETTERS);
+  const a=pick([1,2,3]); let k=randInt(2,8); while(gcd(a,k)!==1)k=randInt(2,8);
+  const sign=pick([1,-1]); const aK=k*sign; // e.g. +3 or -4
+  const cfI=a===1?lfi(v,aK):`${coefStr(a,v)}${aK>=0?'+':''}${aK}`;
+  const cf=`(${cfI})`;
+  const ps=pSqH(v,a,aK);
+  const psFact=`${cf}^2`;
+  const numIsPS=pick([true,false]);
+  // When numIsPS=true: result is the linear expression cfI (no outer brackets on a standalone expression)
+  // Accept both with and without outer brackets to be lenient
+  const finalAns=numIsPS?cfI:`1/(${cfI})`;
+  const finalLtx=numIsPS?cfI:`\\dfrac{1}{${cfI}}`;
+  const finalAccept=numIsPS?[cfI,cf]:[`1/(${cfI})`];
+  const fNum2=numIsPS?ps:cfI, fDen2=numIsPS?cfI:ps;
+  const cNum2=numIsPS?`\\cancelto{1}{${cf}}${cf}`:`\\cancelto{1}{${cfI}}`;
+  const cDen2=numIsPS?`\\cancelto{1}{${cfI}}`:`\\cancelto{1}{${cf}}${cf}`;
+  return {numLatex:fNum2, denLatex:fDen2, finalLatex:finalLtx, steps:[
+    {title:`Factorize the ${numIsPS?'numerator':'denominator'} (it is an expanded perfect square)`,num:1,substeps:[
+      {label:'Perfect square',instruction:`The ${numIsPS?'numerator':'denominator'} is an expanded perfect square. Factorize it.`,hint:`Look for the pattern $a^2\\pm 2ab+b^2=(a\\pm b)^2$.`,answer:psFact,accept:[psFact],reveal:`${ps}=${psFact}`}
+    ]},
+    finaleStep(2, numIsPS?psFact:cfI, numIsPS?cfI:psFact, cf, [cf,cfI],
+      cNum2, cDen2, finalAns, finalAccept, finalLtx)
+  ]};
+}
+
+/* Q3 — simple (coeff 1): difference of squares ↔ perfect square */
+function t4_q3(){
+  const v=pick(VARLETTERS);
+  const k=randInt(2,6); const cfs=pick([1,-1]); const cfK=k*cfs;
+  const cf=lf(v,cfK); const cfI=lfi(v,cfK);
+  const othK=k*(-cfs); const oth=lf(v,othK); const othI=lfi(v,othK);
+  const ds=dSq(v,k); const dsFact=`${oth}${cf}`; const dsFA=`${cf}${oth}`;
+  const ps=pSq(v,cfK); const psFact=`${cf}^2`;
+  const numIsDS=pick([true,false]);
+  const finalAns=numIsDS?`(${othI})/(${cfI})`:`(${cfI})/(${othI})`;
+  const finalLtx=numIsDS?`\\dfrac{${othI}}{${cfI}}`:`\\dfrac{${cfI}}{${othI}}`;
+  return {numLatex:numIsDS?ds:ps, denLatex:numIsDS?ps:ds, finalLatex:finalLtx, steps:[
+    {title:'Factorize the numerator',num:1,substeps:[
+      {label:numIsDS?'Difference of two squares':'Perfect square',
+       instruction:numIsDS?`Factorize the numerator completely (it is a difference of two squares).`:`Factorize the numerator (it is a perfect square).`,
+       hint:numIsDS?`$a^2-b^2=(a-b)(a+b)$`:`Look for $a^2\\pm 2ab+b^2=(a\\pm b)^2$.`,
+       answer:numIsDS?dsFact:psFact, accept:numIsDS?[dsFact,dsFA]:[psFact],
+       reveal:numIsDS?`${ds}=${dsFact}`:`${ps}=${psFact}`}
+    ]},
+    {title:'Factorize the denominator',num:2,substeps:[
+      {label:numIsDS?'Perfect square':'Difference of two squares',
+       instruction:numIsDS?`Factorize the denominator (it is a perfect square).`:`Factorize the denominator (it is a difference of two squares).`,
+       hint:numIsDS?`Look for $a^2\\pm 2ab+b^2=(a\\pm b)^2$.`:`$a^2-b^2=(a-b)(a+b)$`,
+       answer:numIsDS?psFact:dsFact, accept:numIsDS?[psFact]:[dsFact,dsFA],
+       reveal:numIsDS?`${ps}=${psFact}`:`${ds}=${dsFact}`}
+    ]},
+    finaleStep(3,
+      numIsDS?dsFact:psFact, numIsDS?psFact:dsFact, cf, [cf,cfI],
+      numIsDS?`${oth}\\cancelto{1}{${cf}}`:`\\cancelto{1}{${cf}}${cf}`,
+      numIsDS?`\\cancelto{1}{${cf}}${cf}`:`${oth}\\cancelto{1}{${cf}}`,
+      finalAns, [finalAns], finalLtx)
+  ]};
+}
+
+/* ── helper: (av+p)(v+q) expanded as a trinomial ── */
+function triStrP(v,a,p,q){
+  const aStr=a===1?'':String(a);
+  return `${aStr}${v}^2${sC(a*q+p,v)}${signed(p*q)}`;
+}
+
+/* Q4 (called as Q5) — 50/50: (A) harder diff/perf squares coeff≥2  OR  (B) simple trinomial + diff/perf */
+function t4_q4(){
+  const v=pick(VARLETTERS);
+  if(pick([true,false])){
+    /* ── Type A: harder diff of squares ↔ perfect square (coeff ≥ 2) ── */
+    const a=pick([2,3]); let k=randInt(2,7); while(gcd(a,k)!==1)k=randInt(2,7);
+    const cfs=pick([1,-1]); const kS=k*cfs;
+    const cfI=`${coefStr(a,v)}${kS>=0?'+':''}${kS}`; const cf=`(${cfI})`;
+    const othI=`${coefStr(a,v)}${-kS>=0?'+':''}${-kS}`; const oth=`(${othI})`;
+    const ds=dSqH(v,a,k); const dsFact=`${oth}${cf}`; const dsFA=`${cf}${oth}`;
+    const ps=pSqH(v,a,kS); const psFact=`${cf}^2`;
+    const numIsDS=pick([true,false]);
+    const finalAns=numIsDS?`(${othI})/(${cfI})`:`(${cfI})/(${othI})`;
+    const finalLtx=numIsDS?`\\dfrac{${othI}}{${cfI}}`:`\\dfrac{${cfI}}{${othI}}`;
+    return {numLatex:numIsDS?ds:ps, denLatex:numIsDS?ps:ds, finalLatex:finalLtx, steps:[
+      {title:'Factorize the numerator',num:1,substeps:[
+        {label:numIsDS?'Difference of two squares':'Expanded perfect square',
+         instruction:numIsDS?`Factorize the numerator completely (it is a difference of two squares).`:`Factorize the numerator (it is an expanded perfect square).`,
+         hint:numIsDS?`$a^2-b^2=(a-b)(a+b)$`:`Look for $a^2\\pm 2ab+b^2=(a\\pm b)^2$.`,
+         answer:numIsDS?dsFact:psFact, accept:numIsDS?[dsFact,dsFA]:[psFact],
+         reveal:numIsDS?`${ds}=${dsFact}`:`${ps}=${psFact}`}
+      ]},
+      {title:'Factorize the denominator',num:2,substeps:[
+        {label:numIsDS?'Expanded perfect square':'Difference of two squares',
+         instruction:numIsDS?`Factorize the denominator (it is an expanded perfect square).`:`Factorize the denominator (it is a difference of two squares).`,
+         hint:numIsDS?`Look for $a^2\\pm 2ab+b^2=(a\\pm b)^2$.`:`$a^2-b^2=(a-b)(a+b)$`,
+         answer:numIsDS?psFact:dsFact, accept:numIsDS?[psFact]:[dsFact,dsFA],
+         reveal:numIsDS?`${ps}=${psFact}`:`${ds}=${dsFact}`}
+      ]},
+      finaleStep(3,
+        numIsDS?dsFact:psFact, numIsDS?psFact:dsFact, cf, [cf,cfI],
+        numIsDS?`${oth}\\cancelto{1}{${cf}}`:`\\cancelto{1}{${cf}}${cf}`,
+        numIsDS?`\\cancelto{1}{${cf}}${cf}`:`${oth}\\cancelto{1}{${cf}}`,
+        finalAns, [finalAns], finalLtx)
+    ]};
+  } else {
+    /* ── Type B: simple trinomial (coeff 1) + diff of squares or perfect square ── */
+    const r1=pick([2,3,4,5]); const cfs=pick([1,-1]); const cfK=r1*cfs;
+    const cf=lf(v,cfK); const cfI=lfi(v,cfK);
+    let r2=pick([-5,-4,-3,-2,2,3,4,5,6]); while(r2===cfK||r2===-cfK)r2=pick([-5,-4,-3,-2,2,3,4,5,6]);
+    const f2=lf(v,r2); const f2I=lfi(v,r2);
+    const tri=triStr(v,cfK,r2); const triF=`${cf}${f2}`; const triFA=`${f2}${cf}`;
+    const oType=pick(['diff','perf']);
+    let oLatex, oFact, oFactA, resI, oppF;
+    if(oType==='diff'){
+      oLatex=dSq(v,r1); oppF=lf(v,-cfK); const oppI=lfi(v,-cfK);
+      oFact=`${cf}${oppF}`; oFactA=`${oppF}${cf}`; resI=oppI;
+    } else {
+      oLatex=pSq(v,cfK); oFact=`${cf}^2`; oFactA=`${cf}^2`; resI=cfI; oppF=cf;
+    }
+    const numIsTri=pick([true,false]);
+    const finalAns=numIsTri?`(${f2I})/(${resI})`:`(${resI})/(${f2I})`;
+    const finalLtx=numIsTri?`\\dfrac{${f2I}}{${resI}}`:`\\dfrac{${resI}}{${f2I}}`;
+    const cNum=numIsTri?`\\cancelto{1}{${cf}}${f2}`:`\\cancelto{1}{${cf}}${oppF}`;
+    const cDen=numIsTri?`\\cancelto{1}{${cf}}${oppF}`:`\\cancelto{1}{${cf}}${f2}`;
+    return {numLatex:numIsTri?tri:oLatex, denLatex:numIsTri?oLatex:tri, finalLatex:finalLtx, steps:[
+      {title:`Factorize the ${numIsTri?'numerator':'denominator'}`,num:1,substeps:[
+        {label:'Two linear factors',
+         instruction:`Factorize the ${numIsTri?'numerator':'denominator'} into the product of two linear expressions, in brackets.`,
+         hint:`Find two numbers that multiply to ${cfK*r2} and add to ${cfK+r2}.`,
+         answer:triF, accept:[triF,triFA], reveal:`${tri}=${triF}`}
+      ]},
+      {title:`Factorize the ${numIsTri?'denominator':'numerator'}`,num:2,substeps:[
+        {label:oType==='diff'?'Difference of two squares':'Perfect square',
+         instruction:oType==='diff'?`Factorize the ${numIsTri?'denominator':'numerator'} (it is a difference of two squares).`:`Factorize the ${numIsTri?'denominator':'numerator'} (it is a perfect square).`,
+         hint:oType==='diff'?`$a^2-b^2=(a-b)(a+b)$`:`Look for $a^2\\pm 2ab+b^2=(a\\pm b)^2$.`,
+         answer:oFact, accept:[oFact,oFactA], reveal:`${oLatex}=${oFact}`}
+      ]},
+      finaleStep(3,
+        numIsTri?triF:oFact, numIsTri?oFact:triF, cf, [cf,cfI],
+        cNum, cDen, finalAns, [finalAns], finalLtx)
+    ]};
+  }
+}
+
+/* Q5 (called as Q6 after swap) — four-term grouping + explicit product of two linear factors */
+function t4_q5(){
+  const v=pick(VARLETTERS);
+  const r1=pick([2,3,4,5]); // common factor root (positive): cf=(v+r1)
+  let r2=pick([-5,-4,-3,-2,2,3,4,5,6]); while(r2===r1||r2===-r1)r2=pick([-5,-4,-3,-2,2,3,4,5,6]);
+  const cf=lf(v,r1); const cfI=lfi(v,r1);
+  const f2=lf(v,r2); const f2I=lfi(v,r2);
+  // Four-term: v^2 + r1v + r2v + r1*r2 (middle terms shown separately)
+  const fourTerm=`${v}^2${sC(r1,v)}${sC(r2,v)}${signed(r1*r2)}`;
+  const fourF=`${cf}${f2}`; const fourFA=`${f2}${cf}`;
+  // Half-factorized: v(v+r1) ± r2(v+r1)
+  // Group 1: v^2 + r1v = v(v+r1);  Group 2: r2v + r1·r2 = r2(v+r1)
+  const halfF=`${v}${cf}${r2>=0?'+':''}${r2}${cf}`;
+  // Other side: explicit product (a2v+b2)(v+r1) — NOT diff/perf square
+  let a2=pick([1,2,3]);
+  let b2=randInt(1,6)*pick([1,-1]);
+  while(gcd(a2,Math.abs(b2))!==1||(a2===1&&(b2===r1||b2===r2))){
+    a2=pick([1,2,3]); b2=randInt(1,6)*pick([1,-1]);
+  }
+  const f3I=a2===1?lfi(v,b2):`${coefStr(a2,v)}${b2>=0?'+':''}${b2}`;
+  const f3=`(${f3I})`;
+  const prod=`${f3}${cf}`; // (a2v+b2)(v+r1)
+  const numIsG=pick([true,false]);
+  const finalAns=numIsG?`(${f2I})/(${f3I})`:`(${f3I})/(${f2I})`;
+  const finalLtx=numIsG?`\\dfrac{${f2I}}{${f3I}}`:`\\dfrac{${f3I}}{${f2I}}`;
+  return {numLatex:numIsG?fourTerm:prod, denLatex:numIsG?prod:fourTerm, finalLatex:finalLtx, steps:[
+    {title:`Factorize the ${numIsG?'numerator':'denominator'} by grouping`,num:1,substeps:[
+      {label:'Group and factorize each pair by its HCF',
+       instruction:`Group the first two terms and the last two terms. Take out the HCF from each group and write the half-factorized expression.<br>For example: $ax+ay-cx-cy = a(x+y)-c(x+y)$`,
+       working:fourTerm,
+       hint:`First pair: $${v}^2${sC(r1,v)}$; second pair: $${r2}${v}${signed(r1*r2)}$. Take $${v}$ from the first pair and $${r2}$ from the second.`,
+       answer:halfF, accept:[halfF],
+       reveal:`${fourTerm} = ${halfF}`},
+      {label:'Write the fully factorized expression',
+       instruction:`Both groups now share a common factor. Identify it and write the fully factorized expression.`,
+       working:halfF,
+       hint:`Both groups contain $${cf}$. The outer factors are $${v}$ and $${r2}$, giving $${f2}$.`,
+       answer:fourF, accept:[fourF,fourFA],
+       reveal:`${halfF} = ${fourF}`}
+    ]},
+    finaleStep(2,
+      numIsG?fourF:prod, numIsG?prod:fourF, cf, [cf,cfI],
+      numIsG?`\\cancelto{1}{${cf}}${f2}`:`${f3}\\cancelto{1}{${cf}}`,
+      numIsG?`${f3}\\cancelto{1}{${cf}}`:`\\cancelto{1}{${cf}}${f2}`,
+      finalAns, [finalAns], finalLtx)
+  ]};
+}
+
+/* Q6 — quadratic trinomial + explicit product of two linear factors */
+function t4_q6(){
+  const v=pick(VARLETTERS);
+  const r1=pick([-5,-4,-3,-2,2,3,4,5]);
+  let r2=pick([-5,-4,-3,-2,2,3,4,5]); while(r2===r1||r2===-r1)r2=pick([-5,-4,-3,-2,2,3,4,5]);
+  let r3=pick([-5,-4,-3,-2,2,3,4,5]); while(r3===r1||r3===-r1||r3===r2)r3=pick([-5,-4,-3,-2,2,3,4,5]);
+  const cf=lf(v,r1); const cfI=lfi(v,r1);
+  const f2=lf(v,r2); const f2I=lfi(v,r2);
+  const f3=lf(v,r3); const f3I=lfi(v,r3);
+  const tri=triStr(v,r1,r2); const triF=`${cf}${f2}`; const triFA=`${f2}${cf}`;
+  const prod=`${cf}${f3}`;
+  const numIsTri=pick([true,false]);
+  const finalAns=numIsTri?`(${f2I})/(${f3I})`:`(${f3I})/(${f2I})`;
+  const finalLtx=numIsTri?`\\dfrac{${f2I}}{${f3I}}`:`\\dfrac{${f3I}}{${f2I}}`;
+  return {numLatex:numIsTri?tri:prod, denLatex:numIsTri?prod:tri, finalLatex:finalLtx, steps:[
+    {title:`Factorize the ${numIsTri?'numerator':'denominator'}`,num:1,substeps:[
+      {label:'Two linear factors',
+       instruction:`Factorize the ${numIsTri?'numerator':'denominator'} into the product of two linear expressions, in brackets.`,
+       hint:`Find two numbers that multiply to ${r1*r2} and add to ${r1+r2}.`,
+       answer:triF, accept:[triF,triFA], reveal:`${tri}=${triF}`}
+    ]},
+    finaleStep(2,
+      numIsTri?triF:prod, numIsTri?prod:triF, cf, [cf,cfI],
+      `\\cancelto{1}{${cf}}${numIsTri?f2:f3}`, `\\cancelto{1}{${cf}}${numIsTri?f3:f2}`,
+      finalAns, [finalAns], finalLtx,
+      `Compare the brackets in $${numIsTri?triF:prod}$ with $${numIsTri?prod:triF}$.`)
+  ]};
+}
+
+/* Q7 — trinomial with prime leading coefficient + harder diff of squares or perfect square */
+function t4_q7(){
+  const v=pick(VARLETTERS);
+  const a=pick([2,3,5]); // prime leading coefficient
+  let p=randInt(1,6)*pick([1,-1]); while(gcd(a,Math.abs(p))!==1)p=randInt(1,6)*pick([1,-1]);
+  let q=pick([-4,-3,-2,-1,1,2,3,4]);
+  // CF = (av+p),  other trinomial factor = (v+q)
+  const cfI=`${coefStr(a,v)}${p>=0?'+':''}${p}`; const cf=`(${cfI})`;
+  const f2=lf(v,q); const f2I=lfi(v,q);
+  // Trinomial: (av+p)(v+q) = av^2 + (aq+p)v + pq  (positive/negative middle and last)
+  const tri=triStrP(v,a,p,q); const triF=`${cf}${f2}`; const triFA=`${f2}${cf}`;
+  // Other side: harder diff/perf with CF=(av+p)
+  const oType=pick(['diff','perf']); const absP=Math.abs(p);
+  let oLatex, oFact, oFactA, resI, oppF;
+  if(oType==='diff'){
+    oLatex=dSqH(v,a,absP);
+    const oppI_=`${coefStr(a,v)}${-p>=0?'+':''}${-p}`; oppF=`(${oppI_})`;
+    oFact=`${cf}${oppF}`; oFactA=`${oppF}${cf}`; resI=oppI_;
+  } else {
+    oLatex=pSqH(v,a,p); oFact=`${cf}^2`; oFactA=`${cf}^2`; resI=cfI; oppF=cf;
+  }
+  const numIsTri=pick([true,false]);
+  const finalAns=numIsTri?`(${f2I})/(${resI})`:`(${resI})/(${f2I})`;
+  const finalLtx=numIsTri?`\\dfrac{${f2I}}{${resI}}`:`\\dfrac{${resI}}{${f2I}}`;
+  const cNum=numIsTri?`\\cancelto{1}{${cf}}${f2}`:`\\cancelto{1}{${cf}}${oppF}`;
+  const cDen=numIsTri?`\\cancelto{1}{${cf}}${oppF}`:`\\cancelto{1}{${cf}}${f2}`;
+  return {numLatex:numIsTri?tri:oLatex, denLatex:numIsTri?oLatex:tri, finalLatex:finalLtx, steps:[
+    {title:`Factorize the ${numIsTri?'numerator':'denominator'}`,num:1,substeps:[
+      {label:'Trinomial with prime leading coefficient',
+       instruction:`Factorize the ${numIsTri?'numerator':'denominator'} into the product of two linear expressions, in brackets. Use the $ac$ method or trial and error.`,
+       hint:`The factors are $${cf}$ and $${f2}$. Verify by expanding: $(${cfI})(${f2I})=${tri}$.`,
+       answer:triF, accept:[triF,triFA], reveal:`${tri}=${triF}`}
+    ]},
+    {title:`Factorize the ${numIsTri?'denominator':'numerator'}`,num:2,substeps:[
+      {label:oType==='diff'?'Difference of two squares':'Expanded perfect square',
+       instruction:oType==='diff'?`Factorize the ${numIsTri?'denominator':'numerator'} completely (it is a difference of two squares).`:`Factorize the ${numIsTri?'denominator':'numerator'} (it is an expanded perfect square).`,
+       hint:oType==='diff'?`$a^2-b^2=(a-b)(a+b)$`:`Look for $a^2\\pm 2ab+b^2=(a\\pm b)^2$.`,
+       answer:oFact, accept:[oFact,oFactA], reveal:`${oLatex}=${oFact}`}
+    ]},
+    finaleStep(3, numIsTri?triF:oFact, numIsTri?oFact:triF, cf, [cf,cfI],
+      cNum, cDen, finalAns, [finalAns], finalLtx)
+  ]};
+}
+
+/* Q8 — both trinomials with prime leading coefficient; positive or negative middle terms and constants */
+function t4_q8(){
+  const v=pick(VARLETTERS);
+  const a=pick([2,3,5]);
+  let p=randInt(1,6)*pick([1,-1]); while(gcd(a,Math.abs(p))!==1)p=randInt(1,6)*pick([1,-1]);
+  let q=pick([-4,-3,-2,-1,1,2,3,4]);
+  let r=pick([-4,-3,-2,-1,1,2,3,4]); while(r===q)r=pick([-4,-3,-2,-1,1,2,3,4]);
+  const cfI=`${coefStr(a,v)}${p>=0?'+':''}${p}`; const cf=`(${cfI})`;
+  const f2=lf(v,q); const f2I=lfi(v,q);
+  const f3=lf(v,r); const f3I=lfi(v,r);
+  // Tri1=(av+p)(v+q), Tri2=(av+p)(v+r) — both prime leading coeff, varying signs
+  const triN=triStrP(v,a,p,q); const triNF=`${cf}${f2}`; const triNFA=`${f2}${cf}`;
+  const triD=triStrP(v,a,p,r); const triDF=`${cf}${f3}`; const triDFA=`${f3}${cf}`;
+  const finalAns=`(${f2I})/(${f3I})`;
+  const finalLtx=`\\dfrac{${f2I}}{${f3I}}`;
+  return {numLatex:triN, denLatex:triD, finalLatex:finalLtx, steps:[
+    {title:'Factorize the numerator',num:1,substeps:[
+      {label:'Trinomial with prime leading coefficient',
+       instruction:`Factorize the numerator into the product of two linear expressions, in brackets. Use the $ac$ method or trial and error.`,
+       hint:`The factors are $${cf}$ and $${f2}$. Verify: $(${cfI})(${f2I})=${triN}$.`,
+       answer:triNF, accept:[triNF,triNFA], reveal:`${triN}=${triNF}`}
+    ]},
+    {title:'Factorize the denominator',num:2,substeps:[
+      {label:'Trinomial with prime leading coefficient',
+       instruction:`Factorize the denominator into the product of two linear expressions, in brackets. Use the $ac$ method or trial and error.`,
+       hint:`The factors are $${cf}$ and $${f3}$. Verify: $(${cfI})(${f3I})=${triD}$.`,
+       answer:triDF, accept:[triDF,triDFA], reveal:`${triD}=${triDF}`}
+    ]},
+    finaleStep(3, triNF, triDF, cf, [cf,cfI],
+      `\\cancelto{1}{${cf}}${f2}`, `\\cancelto{1}{${cf}}${f3}`,
+      finalAns, [finalAns], finalLtx)
+  ]};
+}
+
+function genT4(){
+  return [
+    Object.assign({id:'t4-0',label:'Q1'},t4_q1()),   // two-variable diff of squares / linear factor
+    Object.assign({id:'t4-1',label:'Q2'},t4_q2()),   // expanded perfect square / linear factor
+    Object.assign({id:'t4-2',label:'Q3'},t4_q6()),   // trinomial + explicit product  (inserted here)
+    Object.assign({id:'t4-3',label:'Q4'},t4_q3()),   // simple diff squares ↔ perfect square
+    Object.assign({id:'t4-4',label:'Q5'},t4_q4()),   // harder diff squares ↔ perfect square
+    Object.assign({id:'t4-5',label:'Q6'},t4_q5()),   // four-term grouping + product
+    Object.assign({id:'t4-6',label:'Q7'},t4_q7()),   // trinomial + diff/perfect square
+    Object.assign({id:'t4-7',label:'Q8'},t4_q8()),   // both trinomials
+  ];
+}
+
+
+/* ═══════════════ SUMMARY / REPORT ═══════════════ */
+const TABS_META=[
+  {type:'t1',label:'Numeric Fractions',          getQs:()=>T1Q, fracFn:q=>`${q.numLatex}/${q.denLatex}`},
+  {type:'t2',label:'Basic Variable Fractions',   getQs:()=>T2Q, fracFn:q=>`${q.numLatex}/${q.denLatex}`},
+  {type:'t3',label:'Common and Linear Factors',  getQs:()=>T3Q, fracFn:q=>`${q.numLatex}/${q.denLatex}`},
+  {type:'t4',label:'Quadratic Expressions',      getQs:()=>T4Q, fracFn:q=>`${q.numLatex}/${q.denLatex}`},
+];
+const DOT={first:'✓',retry:'✓',shown:'👁',blank:''};
+const DOT_TITLE={first:'Correct – first attempt',retry:'Correct – after retries',shown:'Answer revealed',blank:'Not yet attempted'};
+
+/* ── Regenerate any tab that has never been touched (all substeps blank) ── */
+function maybeRegenerate(){
+  const tabs=[
+    {type:'t1', arr:T1Q, gen:genT1, selId:'t1-qsel', probId:'t1-problem'},
+    {type:'t2', arr:T2Q, gen:genT2, selId:'t2-qsel', probId:'t2-problem'},
+    {type:'t3', arr:T3Q, gen:genT3, selId:'t3-qsel', probId:'t3-problem'},
+    {type:'t4', arr:T4Q, gen:genT4, selId:'t4-qsel', probId:'t4-problem'},
+  ];
+  tabs.forEach(({type,arr,gen,selId,probId})=>{
+    const allBlank=arr.every(q=>{
+      const st=STORE[type][q.id];
+      return !st||st.substeps.every(ss=>!ss.done);
+    });
+    if(allBlank){
+      const fresh=gen();
+      arr.length=0; fresh.forEach(q=>arr.push(q));
+      STORE[type]={};
+      buildQsel(type,arr,selId,q=>{Q[type]=q; renderProblem(type,q,probId);});
+    }
+  });
+}
+
+
+function latexToText(s){
+  if(!s) return '—';
+  s=s.replace(/\\dfrac\{([^{}]+)\}\{([^{}]+)\}/g,'($1)/($2)');
+  s=s.replace(/\\[a-zA-Z]+\s*/g,'').replace(/[{}]/g,'');
+  return s||'—';
+}
+
+function renderSummary(){
+  const stuName=(document.getElementById('stu-name')?.value||'').trim()||'Student';
+  const stuClass=(document.getElementById('stu-class')?.value||'').trim()||'—';
+  const stu=`${stuName} · ${stuClass}`;
+  let first=0,retry=0,shown=0,blank=0;
+  const tabData=TABS_META.map(tm=>{
+    const qs=tm.getQs();
+    return qs.map(q=>{
+      let g=0; const rows=[];
+      q.steps.forEach(step=>step.substeps.forEach(()=>{
+        const s=substepStatus(tm.type,q.id,g);
+        if(s==='first')first++; else if(s==='retry')retry++; else if(s==='shown')shown++; else blank++;
+        rows.push({g,status:s,wrongs:getWrongs(tm.type,q.id,g)});
+        g++;
+      }));
+      return {q,rows};
+    });
+  });
+  const total=first+retry+shown+blank;
+
+  const urlDisplay=ASSESSMENT_URL==='PASTE_YOUR_PUBLISHED_URL_HERE'?'(URL not yet set — update ASSESSMENT_URL in the script)':ASSESSMENT_URL;
+  let html=`<div class="report-header" style="flex-direction:column;align-items:flex-start;gap:0.6rem;">
+    <div style="font-size:17px;font-weight:600;color:var(--text);">Simplifying Algebraic Fractions — AfL Report</div>
+    <div style="font-size:13px;color:var(--text2);display:flex;flex-direction:column;gap:0.25rem;">
+      <span><strong>Name:</strong> ${stuName}</span>
+      <span><strong>Class:</strong> ${stuClass}</span>
+      <span><strong>Link to assessment:</strong> <a href="${ASSESSMENT_URL}" target="_blank" style="color:var(--teal-dark);word-break:break-all;">${urlDisplay}</a></span>
+    </div>
+    <button class="copy-btn print-btn" onclick="savePDF()" style="background:var(--teal-light);color:var(--teal-dark);border-color:var(--teal);margin-top:0.25rem;">Save Report (html) (for printing to pdf)</button>
+  </div>
+  <div style="background:var(--bg2);border-radius:var(--radius-md);padding:0.9rem 1.1rem;margin-bottom:1rem;border:0.5px solid var(--border2);">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:0.5rem;">Save this file to your local drive, then open in a web browser (double-click to open).</p>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:0.5rem;">Print as PDF from your web browser's print dialog to save a PDF file.</p>
+    <p style="font-size:13px;color:var(--text2);margin:0;">Send the report in PDF format to your instructor.</p>
+  </div>
+  <div class="stat-bar">
+    <span class="stat-pill sp-first">✓ First try: ${first}</span>
+    <span class="stat-pill sp-retry">↺ After retries: ${retry}</span>
+    <span class="stat-pill sp-shown">👁 Revealed: ${shown}</span>
+    <span class="stat-pill sp-blank">○ Not yet: ${blank}</span>
+  </div>
+  <div class="report-legend">
+    <span class="leg-item"><span class="sdot sdot-first">✓</span> Correct – first try</span>
+    <span class="leg-item"><span class="sdot sdot-retry">✓</span> Correct – after retries</span>
+    <span class="leg-item"><span class="sdot sdot-shown">👁</span> Answer revealed</span>
+    <span class="leg-item"><span class="sdot sdot-blank"></span> Not yet attempted</span>
+  </div>`;
+
+  html+=`<div style="font-size:12px;color:var(--text3);background:var(--bg2);border-radius:var(--radius-md);padding:0.6rem 1rem;margin-bottom:1rem;border:0.5px solid var(--border2);">
+    <strong>🔒 Answers</strong> are shown only for questions you have started. Unattempted questions show — to protect the integrity of the exercise.
+  </div>`;
+
+  TABS_META.forEach((tm,ti)=>{
+    html+=`<div class="report-section"><div class="report-section-title">${tm.label}</div>`;
+    tabData[ti].forEach(({q,rows})=>{
+      const frac=`(${q.numLatex})/(${q.denLatex})`;
+      const fullyDone=rows.length>0&&rows[rows.length-1].status!=='blank';
+      const ansTxt=fullyDone?latexToText(q.finalLatex||q.sol||''):'—';
+      html+=`<div class="report-row">
+        <span class="rq-label">${q.label}</span>
+        <span class="rq-frac" title="${frac}">${frac.length>32?frac.slice(0,30)+'…':frac}</span>
+        <span class="dots-wrap">`;
+      rows.forEach(({status,wrongs})=>{
+        const extra = status==='retry'&&wrongs>0 ? ` title="${wrongs} wrong attempt${wrongs>1?'s':''} then correct"` : ` title="${DOT_TITLE[status]}"`;
+        html+=`<span class="sdot sdot-${status}"${extra}>${DOT[status]}</span>`;
+      });
+      html+=`</span><span class="rq-ans" title="Answer: ${ansTxt}">= ${ansTxt.length>16?ansTxt.slice(0,14)+'…':ansTxt}</span></div>`;
+    });
+    html+=`</div>`;
+  });
+  document.getElementById('summary-content').innerHTML=html;
+}
+
+function savePDF(){
+  const stuName=(document.getElementById('stu-name')?.value||'').trim()||'Student';
+  const stuClass=(document.getElementById('stu-class')?.value||'').trim()||'—';
+  const date=new Date().toLocaleDateString();
+  const urlLine=ASSESSMENT_URL==='PASTE_YOUR_PUBLISHED_URL_HERE'?'(URL not set)':ASSESSMENT_URL;
+  const SYM={first:'✓',retry:'~',shown:'👁',blank:'○'};
+  const COL={first:'#1D9E75',retry:'#BA7517',shown:'#1565C0',blank:'#bbb'};
+  let sections='';
+  TABS_META.forEach(tm=>{
+    let rows='';
+    tm.getQs().forEach(q=>{
+      let g=0; let dots=''; let lastStatus='blank';
+      q.steps.forEach(step=>step.substeps.forEach(()=>{
+        const s=substepStatus(tm.type,q.id,g);
+        lastStatus=s;
+        dots+=`<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${COL[s]};color:#fff;font-size:10px;margin:1px;">${SYM[s]}</span>`;
+        g++;
+      }));
+      const frac=`(${q.numLatex})/(${q.denLatex})`;
+      const ans=lastStatus!=='blank'?latexToText(q.finalLatex||''):'—';
+      rows+=`<tr>
+        <td style="font-weight:600;padding:5px 8px;white-space:nowrap;">${q.label}</td>
+        <td style="font-family:monospace;font-size:12px;padding:5px 8px;">${frac}</td>
+        <td style="padding:5px 8px;white-space:nowrap;">${dots}</td>
+        <td style="font-family:monospace;font-size:12px;color:#1D9E75;padding:5px 8px;white-space:nowrap;">= ${ans}</td>
+      </tr>`;
+    });
+    sections+=`<h3 style="font-size:14px;margin:1.25rem 0 0.4rem;color:#333;border-bottom:1px solid #ddd;padding-bottom:4px;">${tm.label}</h3>
+      <table style="width:100%;border-collapse:collapse;">${rows}</table>`;
+  });
+  const html=`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+  <title>AfL Report — ${stuName} — ${date}</title>
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:760px;margin:2rem auto;padding:0 1rem;color:#1d1d1f;}
+    h1{font-size:20px;margin-bottom:0.6rem;}
+    .meta{font-size:13px;color:#444;line-height:1.9;margin-bottom:1rem;}
+    .meta strong{color:#111;}
+    h3{font-size:14px;margin:1.25rem 0 0.4rem;color:#333;border-bottom:1px solid #ddd;padding-bottom:4px;}
+    table{width:100%;border-collapse:collapse;}
+    table tr{border-bottom:1px solid #f0f0f0;}
+    .legend{font-size:11px;color:#888;margin:1rem 0;}
+    @media print{body{margin:0.75rem;} h3{page-break-before:auto;}}
+  </style>
+  </head><body>
+  <h1>Simplifying Algebraic Fractions — AfL Report</h1>
+  <div class="meta">
+    <div><strong>Name:</strong> ${stuName}</div>
+    <div><strong>Class:</strong> ${stuClass}</div>
+    <div><strong>Date:</strong> ${date}</div>
+    <div><strong>Link to assessment:</strong> <a href="${urlLine}">${urlLine}</a></div>
+  </div>
+  ${sections}
+  <p class="legend">Legend: ✓ = correct first try &nbsp;|&nbsp; ~ = correct after retries &nbsp;|&nbsp; 👁 = answer revealed &nbsp;|&nbsp; ○ = not yet attempted</p>
+  <script>window.addEventListener('load',function(){window.print();});<\/script>
+  </body></html>`;
+  try{
+    const blob=new Blob([html],{type:'text/html'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download=`AfLReport_${stuName.replace(/\s+/g,'_')}_${stuClass.replace(/\s+/g,'_')}_${date.replace(/\//g,'-')}.html`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),5000);
+  } catch(e){
+    const w=window.open('about:blank','_blank');
+    if(w){w.document.write(html);w.document.close();}
+    else{alert('Please allow pop-ups or downloads for this feature.');}
+  }
+}
+
+/* ═══════════════ INITIALISE ═══════════════ */
+const T1Q=genT1(), T2Q=genT2(), T3Q=genT3(), T4Q=genT4();
+buildQsel('t1',T1Q,'t1-qsel',q=>{Q.t1=q; renderProblem('t1',q,'t1-problem');});
+buildQsel('t2',T2Q,'t2-qsel',q=>{Q.t2=q; renderProblem('t2',q,'t2-problem');});
+buildQsel('t3',T3Q,'t3-qsel',q=>{Q.t3=q; renderProblem('t3',q,'t3-problem');});
+buildQsel('t4',T4Q,'t4-qsel',q=>{Q.t4=q; renderProblem('t4',q,'t4-problem');});
+</script>
+</body>
+</html>
